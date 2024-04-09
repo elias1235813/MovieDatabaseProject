@@ -1,0 +1,12 @@
+{
+  "name": "moviedatabaseproject",
+  "version": "1.0.0",
+  "description": "Projektin aihe: Toteutetaan verkkosivu, jossa on elokuvalistaus. Etusivulla pienet tietokortit, klikkaamalla avautuu laajemmat tiedot.\r Elokuvan tietoja:\r nimi,\r ohjaaja,\r vuosi,\r kesto,\r arvostelut,\r kuvaus,\r kuva,\r kategoria. \r Extraa: tykkäykset, yhdistäminen imdb:hen tms.\r Kahdenlaisia käyttäjiä: peruskäyttäjä/katselija, joka voi lukea ja suodattaa elokuvia sekä admin käyttäjä, joka voi lisätä, päivittää ja poistaa elokuvia.\r Teknologiat: Node.js, Handlebars, MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
