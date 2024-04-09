@@ -8,7 +8,7 @@ kesto,
 arvostelut,
 kuvaus,
 kuva,
-kategoria 
+kategoria. 
 Extraa: tykkäykset, yhdistäminen imdb:hen tms.
 Kahdenlaisia käyttäjiä: peruskäyttäjä/katselija, joka voi lukea ja suodattaa elokuvia sekä admin käyttäjä, joka voi lisätä, päivittää ja poistaa elokuvia.
 Teknologiat: Node.js, Handlebars, MongoDB
