@@ -1,0 +1,45 @@
+
+#root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    > section {
+        flex: 1;
+    }
+}
+
+article {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.search-and-filter-area{
+    padding: 20px;
+    background-color: darkorange;
+    color: white;
+}
+
+footer {
+    background-color: black;
+    color: lightgray;
+    text-align: center;
+    padding: 30px;
+}
+
+.movie-list{
+    padding: 50px;
+    display: flex;
+    flex-wrap: wrap;
+ 
+}
+.card {
+    width: 540px;
+    margin: 20px;
+}
+
+
+
+
+
+
+
