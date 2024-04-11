@@ -1,20 +1,39 @@
-const { MongoClient } = require("mongodb");
-const uri =
-    'mongodb+srv://iidasavimaki:GzgtED9jvEKEozzI@cluster0.od4s470.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
-const client = new MongoClient(uri);
+const express = require('express');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
-async function run() {
-    try {
-      await client.connect();
-      const database = client.db('movies');
-      const movies = database.collection('movies');
-      // Query for a movie that has the title 'Back to the Future'
-      const query = { title: 'Inception' };
-      const movie = await movies.findOne(query);
-      console.log(movie);
-    } finally {
-      // Ensures that the client will close when you finish/error
-      await client.close();
-    }
-  }
-  run().catch(console.dir);
+const dbURI = 'mongodb+srv://'+process.env.DBUSERNAME+':'+process.env.DBPASSWORD+'@'+process.env.CLUSTER+'.mongodb.net/'+process.env.DB+'?retryWrites=true&w=majority&appName=Cluster0';
+console.log(dbURI);
+
+mongoose.connect(dbURI)
+.then((result) => 
+{
+    console.log('Connected to DB');
+})
+.catch((err) => {
+    console.log(err);
+})
+
+const Movie = require('./models/Movie');
+
+const newMovie = new Movie({
+    name: 'Something',
+    year: 1991
+});
+
+/*
+newMovie.save()
+.then((result) =>
+{
+    console.log(result);
+})
+.catch((err) => {
+    console.log(err);
+})
+*/
+
+Movie.find()
+.then((result) =>
+{
+    console.log(result);
+})
