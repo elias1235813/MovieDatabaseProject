@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MoviePreviewCard = ({ id, kuvaURL, nimi, julkaisuvuosi, kuvaus }) => {
+const ElokuvaKortti = ({ id, kuvaURL, nimi, julkaisuvuosi, kuvaus }) => {
   // id:llä muodostetaan linkki elokuvan sivulle
   return (
     <div class="card mb-3">
@@ -38,4 +38,4 @@ const MoviePreviewCard = ({ id, kuvaURL, nimi, julkaisuvuosi, kuvaus }) => {
   );
 };
 
-export default MoviePreviewCard;
+export default ElokuvaKortti;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import MoviePreviewCard from './MoviePreviewCard';
+import ElokuvaKortti from './ElokuvaKortti';
 
-const MovieList = () => {
+const ElokuvaLista = () => {
   const [leffat, setLeffat] = useState([
     {
       // Esimerkkidataa, joka korvataan kannan tiedoilla
@@ -25,10 +25,8 @@ const MovieList = () => {
 
   return (
     <section className="movie-list">
-      {/* Tähän tulee kaikki kannassa olevat elokuvat! */}
-
       {leffat.map((leffa) => (
-        <MoviePreviewCard
+        <ElokuvaKortti
           key={leffa.id}
           id={leffa.id}
           nimi={leffa.nimi}
@@ -41,4 +39,4 @@ const MovieList = () => {
   );
 };
 
-export default MovieList;
+export default ElokuvaLista;

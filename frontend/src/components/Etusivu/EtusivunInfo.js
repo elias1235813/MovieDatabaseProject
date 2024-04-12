@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FrontpageInfo = () => {
+const EtusivunInfo = () => {
   return (
     <article>
       <h1>Tervetuloa maailman hienoimpaan elokuvatietokantaan!</h1>
@@ -13,4 +13,4 @@ const FrontpageInfo = () => {
   );
 };
 
-export default FrontpageInfo;
+export default EtusivunInfo;
