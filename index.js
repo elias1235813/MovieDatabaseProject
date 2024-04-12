@@ -16,12 +16,19 @@ mongoose.connect(dbURI)
 
 const Movie = require('./models/Movie');
 
+/*
 const newMovie = new Movie({
-    name: 'Something',
-    year: 1991
+  name: "The Matrix",
+  year: 1999,
+  director: ["Lana Wachowski", "Lily Wachowski"],
+  runtime: "2h 16m",
+  rating: 8.7,
+  description: "Keanu Reeves uhmaa fysiikan lakeja ja väistelee luoteja",
+  genre: ["Action", "Scifi"],
+  image: "https://irs.www.warnerbros.com/keyart-jpeg/movies/media/browser/Matrix_2000x3000.JPEG"
 });
 
-/*
+
 newMovie.save()
 .then((result) =>
 {
@@ -30,6 +37,7 @@ newMovie.save()
 .catch((err) => {
     console.log(err);
 })
+
 */
 
 Movie.find()
@@ -37,3 +45,8 @@ Movie.find()
 {
     console.log(result);
 })
+.catch((err) => {
+  console.log(err);
+})
+
+
