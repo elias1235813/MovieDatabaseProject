@@ -1,13 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Navigaatio = () => {
   return (
-    //  Alustava navigointi. Siivotaan, kun tiedetään tarkemmin mitä halutaan
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
-        <a className="navbar-brand" href="#">
+        {/* Linkkijutut routerista */}
+        <Link className="navbar-brand" to="/">
           Leffatietokanta
-        </a>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -21,11 +22,11 @@ const Navigaatio = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            {/* <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="#">
-                Home
-              </a>
-            </li> */}
+            <li className="nav-item">
+              <Link className="nav-link active" to="/admin">
+                Ylläpito
+              </Link>
+            </li>
           </ul>
         </div>
       </div>

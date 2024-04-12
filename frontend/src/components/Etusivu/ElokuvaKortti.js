@@ -1,7 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const ElokuvaKortti = ({ id, kuvaURL, nimi, julkaisuvuosi, kuvaus }) => {
-  // id:llä muodostetaan linkki elokuvan sivulle
   return (
     <div class="card mb-3">
       <div class="row g-0">
@@ -13,28 +13,14 @@ const ElokuvaKortti = ({ id, kuvaURL, nimi, julkaisuvuosi, kuvaus }) => {
             <h5 className="card-title">Nimi:{nimi}</h5>
             <p className="card-text">Julkaisuvuosi:{julkaisuvuosi}</p>
             <p className="card-text">Kuvaus: {kuvaus}</p>
-            <a href="#" className="btn btn-primary">
-              {/* TODO: korvataan React-routerin link-komponentilla */}
+            {/* Routerin juttuja */}
+            <Link className="btn btn-primary" to={`/leffat/${id}`}>
               Katso lisää
-            </a>
+            </Link>
           </div>
         </div>
       </div>
     </div>
-    // <section>
-    //   <div className="card">
-    //     <img width="100" src={kuvaURL} className="card-img-left" alt={nimi} />
-    //     <div className="card-body">
-    //       <h5 className="card-title">Nimi:{nimi}</h5>
-    //       <p className="card-text">Julkaisuvuosi:{julkaisuvuosi}</p>
-    //       <p className="card-text">Kuvaus: {kuvaus}</p>
-    //       <a href="#" className="btn btn-primary">
-    //         {/* TODO: korvataan React-routerin link-komponentilla */}
-    //         Katso lisää
-    //       </a>
-    //     </div>
-    //   </div>
-    // </section>
   );
 };
 

@@ -4,14 +4,13 @@ const LisaaElokuva = () => {
   return (
     <section>
       <h2>Lisää elokuva</h2>
+
+      {/* Form ei vielä saavutettava, vasta alustava versio */}
       <form>
         <label for="nimi" className="form-label">
           Nimi
         </label>
         <input type="text" className="form-control" id="nimi" />
-        <button type="submit" className="btn btn-primary">
-          Tallenna
-        </button>
 
         <label for="vuosi" className="form-label">
           Julkaisuvuosi
@@ -42,6 +41,10 @@ const LisaaElokuva = () => {
           Kuvan URL
         </label>
         <input type="text" className="form-control" id="kuvaURL" />
+
+        <button type="submit" className="btn btn-primary">
+          Tallenna
+        </button>
       </form>
     </section>
   );

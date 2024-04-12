@@ -1,18 +1,16 @@
 import './App.css';
 import Navigaatio from './Yleiset/Navigaatio';
-import EtusivunInfo from './Etusivu/EtusivunInfo';
-import HakuJaSuodatus from './Etusivu/HakuJaSuodatus';
-import ElokuvaLista from './Etusivu/ElokuvaLista';
 import Footer from './Yleiset/Footer';
+import { Outlet } from 'react-router-dom';
+import AdminNakyma from './Admin/AdminNakyma';
 
 function App() {
   return (
     <>
       <Navigaatio />
       <section>
-        <EtusivunInfo />
-        <HakuJaSuodatus />
-        <ElokuvaLista />
+        {/* Ideana on, että Navigaatio ja Footer aina samat, section-osioon React Router luo vaihtuvan sisällön polun perusteella */}
+        <Outlet />
       </section>
       <Footer />
     </>

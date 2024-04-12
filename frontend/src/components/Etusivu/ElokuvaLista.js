@@ -22,7 +22,7 @@ const ElokuvaLista = () => {
         'https://elokuvalisenssi.fi/wp-content/uploads/2021/07/u0ayQBxXKajRMl1tfGCPSoC3vBg-scaled-1.jpg',
     },
   ]);
-
+  // Varsinainen kortti:
   return (
     <section className="movie-list">
       {leffat.map((leffa) => (
