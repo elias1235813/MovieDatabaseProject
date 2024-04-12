@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Navigation = () => {
+const Navigaatio = () => {
   return (
     //  Alustava navigointi. Siivotaan, kun tiedetään tarkemmin mitä halutaan
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -33,4 +33,4 @@ const Navigation = () => {
   );
 };
 
-export default Navigation;
+export default Navigaatio;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SearchAndFilter = () => {
+const HakuJaSuodatus = () => {
   return (
     <section className="search-and-filter-area">
       Hakukenttä ja filtteröinti tähän.
@@ -8,4 +8,4 @@ const SearchAndFilter = () => {
   );
 };
 
-export default SearchAndFilter;
+export default HakuJaSuodatus;
