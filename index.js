@@ -4,6 +4,9 @@ require('dotenv').config();
 
 const app = express();
 
+// Middleware
+app.use(express.json());
+
 const dbURI = 'mongodb+srv://'+process.env.DBUSERNAME+':'+process.env.DBPASSWORD+'@'+process.env.CLUSTER+'.mongodb.net/'+process.env.DB+'?retryWrites=true&w=majority&appName=Cluster0';
 console.log(dbURI);
 
@@ -69,6 +72,54 @@ app.get('/movies', async (req, res) => {
 
 })
 
+// API POST
+app.post('/movies', async (req, res) => {
+  try {
+  // ota data requestista
+  const { name, year, director, runtime, rating, description, genre, image } = req.body;
+
+    // Lisää uusi elokuva
+    const newMovie = new Movie({ 
+      name,
+      year, 
+      director,
+      runtime,
+      rating,
+      description,
+      genre,
+      image
+    });
+
+    // Tallenna elokuva tietokantaan
+    const savedMovie = await newMovie.save();
+
+    res.status(201).json(savedTask);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// API DELETE
+app.delete('/movies:id', async (req, res) => {
+  try {
+      // Ota elokuvan id requestista
+      const movieID = req.params.id;
+
+      // Löydä elokuva id:n perusteella
+      const deletedMovie = await Movie.findByIdAndDelete(movieID);
+
+      // Jos elokuvaa ei löydy palauta 404 Not Found
+      if (!deletedMovie) {
+        return res.status(404).json({ message: 'Elokuvaa ei löytynyt' });
+      }
+
+      res.json(deletedMovie);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 
 
-
+module.exports = app
