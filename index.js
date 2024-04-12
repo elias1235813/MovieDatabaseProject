@@ -2,12 +2,16 @@ const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
+const app = express();
+
 const dbURI = 'mongodb+srv://'+process.env.DBUSERNAME+':'+process.env.DBPASSWORD+'@'+process.env.CLUSTER+'.mongodb.net/'+process.env.DB+'?retryWrites=true&w=majority&appName=Cluster0';
 console.log(dbURI);
 
 mongoose.connect(dbURI)
 .then((result) => 
 {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => console.log("Listening on " + PORT));
     console.log('Connected to DB');
 })
 .catch((err) => {
@@ -16,6 +20,8 @@ mongoose.connect(dbURI)
 
 const Movie = require('./models/Movie');
 
+
+//Testaukseen käyttettyä koodia
 /*
 const newMovie = new Movie({
   name: "The Matrix",
@@ -40,6 +46,7 @@ newMovie.save()
 
 */
 
+/*
 Movie.find()
 .then((result) =>
 {
@@ -48,5 +55,20 @@ Movie.find()
 .catch((err) => {
   console.log(err);
 })
+*/
+
+// API GET 
+app.get('/movies', async (req, res) => {
+    try{
+      const result = await Movie.find();
+      res.json(result);
+    }
+    catch (error) {
+      console.log(error);
+    }
+
+})
+
+
 
 
