@@ -2,7 +2,7 @@ import React from 'react';
 
 const LisaaElokuva = () => {
   return (
-    <section>
+    <section className="adminosio">
       <h2>Lisää elokuva</h2>
 
       {/* Form ei vielä saavutettava, vasta alustava versio */}
@@ -42,7 +42,7 @@ const LisaaElokuva = () => {
         </label>
         <input type="text" className="form-control" id="kuvaURL" />
 
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-outline-success">
           Tallenna
         </button>
       </form>

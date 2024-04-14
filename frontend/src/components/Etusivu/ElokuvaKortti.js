@@ -10,9 +10,9 @@ const ElokuvaKortti = ({ id, kuvaURL, nimi, julkaisuvuosi, kuvaus }) => {
         </div>
         <div class="col-md-8">
           <div class="card-body">
-            <h5 className="card-title">Nimi:{nimi}</h5>
-            <p className="card-text">Julkaisuvuosi:{julkaisuvuosi}</p>
-            <p className="card-text">Kuvaus: {kuvaus}</p>
+            <h5 className="card-title">{nimi}</h5>
+            <p className="card-text">{julkaisuvuosi}</p>
+            <p className="card-text">{kuvaus}</p>
             {/* Routerin juttuja */}
             <Link className="btn btn-primary" to={`/leffat/${id}`}>
               Katso lisää
