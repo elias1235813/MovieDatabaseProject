@@ -7,6 +7,11 @@ const app = express();
 // Middleware
 app.use(express.json());
 
+console.log("DBUSERNAME:", process.env.DBUSERNAME);
+console.log("DBPASSWORD:", process.env.DBPASSWORD);
+console.log("CLUSTER:", process.env.CLUSTER);
+console.log("DB:", process.env.DB);
+
 const dbURI = 'mongodb+srv://'+process.env.DBUSERNAME+':'+process.env.DBPASSWORD+'@'+process.env.CLUSTER+'.mongodb.net/'+process.env.DB+'?retryWrites=true&w=majority&appName=Cluster0';
 console.log(dbURI);
 
@@ -93,7 +98,7 @@ app.post('/movies', async (req, res) => {
     // Tallenna elokuva tietokantaan
     const savedMovie = await newMovie.save();
 
-    res.status(201).json(savedTask);
+    res.status(201).json(savedMovie);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'Server error' });
@@ -101,7 +106,7 @@ app.post('/movies', async (req, res) => {
 });
 
 // API DELETE
-app.delete('/movies:id', async (req, res) => {
+app.delete('/movies/:id', async (req, res) => {
   try {
       // Ota elokuvan id requestista
       const movieID = req.params.id;
