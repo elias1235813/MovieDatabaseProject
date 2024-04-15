@@ -1,33 +1,40 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
+const Movie = require('./models/Movie');
 
 const app = express();
 
 // Middleware
 app.use(express.json());
 
-console.log("DBUSERNAME:", process.env.DBUSERNAME);
-console.log("DBPASSWORD:", process.env.DBPASSWORD);
-console.log("CLUSTER:", process.env.CLUSTER);
-console.log("DB:", process.env.DB);
+console.log('DBUSERNAME:', process.env.DBUSERNAME);
+console.log('DBPASSWORD:', process.env.DBPASSWORD);
+console.log('CLUSTER:', process.env.CLUSTER);
+console.log('DB:', process.env.DB);
 
-const dbURI = 'mongodb+srv://'+process.env.DBUSERNAME+':'+process.env.DBPASSWORD+'@'+process.env.CLUSTER+'.mongodb.net/'+process.env.DB+'?retryWrites=true&w=majority&appName=Cluster0';
+const dbURI =
+  'mongodb+srv://' +
+  process.env.DBUSERNAME +
+  ':' +
+  process.env.DBPASSWORD +
+  '@' +
+  process.env.CLUSTER +
+  '.mongodb.net/' +
+  process.env.DB +
+  '?retryWrites=true&w=majority&appName=Cluster0';
 console.log(dbURI);
 
-mongoose.connect(dbURI)
-.then((result) => 
-{
+mongoose
+  .connect(dbURI)
+  .then((result) => {
     const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => console.log("Listening on " + PORT));
+    app.listen(PORT, () => console.log('Listening on ' + PORT));
     console.log('Connected to DB');
-})
-.catch((err) => {
+  })
+  .catch((err) => {
     console.log(err);
-})
-
-const Movie = require('./models/Movie');
-
+  });
 
 //Testaukseen käyttettyä koodia
 /*
@@ -65,34 +72,33 @@ Movie.find()
 })
 */
 
-// API GET 
+// API GET
 app.get('/movies', async (req, res) => {
-    try{
-      const result = await Movie.find();
-      res.json(result);
-    }
-    catch (error) {
-      console.log(error);
-    }
-
-})
+  try {
+    const result = await Movie.find();
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 // API POST
 app.post('/movies', async (req, res) => {
   try {
-  // ota data requestista
-  const { name, year, director, runtime, rating, description, genre, image } = req.body;
+    // ota data requestista
+    const { name, year, director, runtime, rating, description, genre, image } =
+      req.body;
 
     // Lisää uusi elokuva
-    const newMovie = new Movie({ 
+    const newMovie = new Movie({
       name,
-      year, 
+      year,
       director,
       runtime,
       rating,
       description,
       genre,
-      image
+      image,
     });
 
     // Tallenna elokuva tietokantaan
@@ -108,23 +114,64 @@ app.post('/movies', async (req, res) => {
 // API DELETE
 app.delete('/movies/:id', async (req, res) => {
   try {
-      // Ota elokuvan id requestista
-      const movieID = req.params.id;
+    // Ota elokuvan id requestista
+    const movieID = req.params.id;
 
-      // Löydä elokuva id:n perusteella
-      const deletedMovie = await Movie.findByIdAndDelete(movieID);
+    // Löydä elokuva id:n perusteella
+    const deletedMovie = await Movie.findByIdAndDelete(movieID);
 
-      // Jos elokuvaa ei löydy palauta 404 Not Found
-      if (!deletedMovie) {
-        return res.status(404).json({ message: 'Elokuvaa ei löytynyt' });
-      }
+    // Jos elokuvaa ei löydy palauta 404 Not Found
+    if (!deletedMovie) {
+      return res.status(404).json({ message: 'Elokuvaa ei löytynyt' });
+    }
 
-      res.json(deletedMovie);
+    res.json(deletedMovie);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
+// API UPDATE (PATCH)
+app.patch('/movies/:id', async (req, res) => {
+  try {
+    // Päivitettävä elokuva valitaan id:n perusteella
+    const filter = { _id: req.params.id };
 
-module.exports = app
+    // Luetaan pyynnöstä elokuvan päivitettävät tiedot update-objektiin
+    const update = {};
+
+    const movieDetails = [
+      'name',
+      'year',
+      'director',
+      'runtime',
+      'rating',
+      'description',
+      'genre',
+      'image',
+    ];
+
+    movieDetails.forEach((movieDetail) => {
+      if (req.body[movieDetail] != null) {
+        update[movieDetail] = req.body[movieDetail];
+      }
+    });
+
+    // Päivitetään tiedot
+
+    const updatedMovie = await Movie.findOneAndUpdate(filter, update, {
+      new: true,
+      upsert: false,
+    });
+
+    // Status 200, jos kaikki ok
+
+    res.status(200).json(updatedMovie);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+module.exports = app;
