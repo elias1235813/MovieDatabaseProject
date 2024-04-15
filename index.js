@@ -8,11 +8,6 @@ const app = express();
 // Middleware
 app.use(express.json());
 
-console.log('DBUSERNAME:', process.env.DBUSERNAME);
-console.log('DBPASSWORD:', process.env.DBPASSWORD);
-console.log('CLUSTER:', process.env.CLUSTER);
-console.log('DB:', process.env.DB);
-
 const dbURI =
   'mongodb+srv://' +
   process.env.DBUSERNAME +
@@ -28,7 +23,7 @@ console.log(dbURI);
 mongoose
   .connect(dbURI)
   .then((result) => {
-    const PORT = process.env.PORT || 3000;
+    const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => console.log('Listening on ' + PORT));
     console.log('Connected to DB');
   })
@@ -75,8 +70,9 @@ Movie.find()
 // API GET
 app.get('/movies', async (req, res) => {
   try {
-    const result = await Movie.find();
-    res.json(result);
+    const movies = await Movie.find();
+    res.json(movies);
+    
   } catch (error) {
     console.log(error);
   }
@@ -86,12 +82,12 @@ app.get('/movies', async (req, res) => {
 app.post('/movies', async (req, res) => {
   try {
     // ota data requestista
-    const { name, year, director, runtime, rating, description, genre, image } =
+    const { title, year, director, runtime, rating, description, genre, image } =
       req.body;
 
     // Lisää uusi elokuva
     const newMovie = new Movie({
-      name,
+      title,
       year,
       director,
       runtime,
@@ -142,7 +138,7 @@ app.patch('/movies/:id', async (req, res) => {
     const update = {};
 
     const movieDetails = [
-      'name',
+      'title',
       'year',
       'director',
       'runtime',

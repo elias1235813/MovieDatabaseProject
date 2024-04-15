@@ -1,6 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ElokuvaKortti from './ElokuvaKortti';
+import axios from 'axios';
 
+
+function Elokuvalista(){
+  const [leffat, setMovies] = useState([]);
+
+  useEffect(() => {
+    axios.get('/movies')
+      .then(response => {
+        setMovies(response.data);
+      })
+      .catch(error => {
+        console.error('Elokuvien hakeminen epäonnistui', error);
+      });
+  }, []);
+  
+  return (
+    <section className="movie-list">
+      {leffat.map((leffa) => (
+        <ElokuvaKortti
+          key={leffa.id}
+          id={leffa.id}
+          nimi={leffa.title}
+          julkaisuvuosi={leffa.year}
+          kuvaus={leffa.description}
+          kuvaURL={leffa.image}
+        />
+      ))}
+    </section>
+  );
+
+
+
+}
+
+/*
 const ElokuvaLista = () => {
   const [leffat, setLeffat] = useState([
     {
@@ -38,5 +73,5 @@ const ElokuvaLista = () => {
     </section>
   );
 };
-
-export default ElokuvaLista;
+*/
+export default Elokuvalista;
