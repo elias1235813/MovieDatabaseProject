@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const ElokuvaKortti = ({ id, image, title, year, description }) => {
+const ElokuvaKortti = ({ _id, image, title, year, description }) => {
   return (
     <div class="card mb-3">
       <div class="row g-0">
@@ -14,7 +14,7 @@ const ElokuvaKortti = ({ id, image, title, year, description }) => {
             <p className="card-text">{year}</p>
             <p className="card-text">{description}</p>
             {/* Routerin juttuja */}
-            <Link className="btn btn-primary" to={`/leffat/${id}`}>
+            <Link className="btn btn-primary" to={`/leffat/${_id}`}>
               Katso lisää
             </Link>
           </div>

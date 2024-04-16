@@ -7,9 +7,10 @@ function Elokuvalista(){
   const [leffat, setMovies] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/movies')
+    axios.get('http://localhost:3000/api/movies')
       .then(response => {
         setMovies(response.data);
+        console.log('Movies fetched:', response.data);
       })
       .catch(error => {
         console.error('Elokuvien hakeminen epäonnistui', error);
@@ -20,8 +21,8 @@ function Elokuvalista(){
     <section className="movie-list">
       {leffat.map((leffa) => (
         <ElokuvaKortti
-          key={leffa.id}
-          id={leffa.id}
+          key={leffa._id}
+          id={leffa._id}
           nimi={leffa.title}
           julkaisuvuosi={leffa.year}
           kuvaus={leffa.description}
