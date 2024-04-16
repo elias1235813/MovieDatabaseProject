@@ -7,7 +7,7 @@ function Elokuvalista(){
   const [leffat, setMovies] = useState([]);
 
   useEffect(() => {
-    axios.get('/movies')
+    axios.get('http://localhost:5000/api/movies')
       .then(response => {
         setMovies(response.data);
       })
@@ -30,8 +30,6 @@ function Elokuvalista(){
       ))}
     </section>
   );
-
-
 
 }
 

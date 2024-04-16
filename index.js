@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const mongoose = require('mongoose');
 require('dotenv').config();
 const Movie = require('./models/Movie');
@@ -7,6 +8,9 @@ const app = express();
 
 // Middleware
 app.use(express.json());
+
+// Frontin syöttäminen backendiin
+app.use(express.static(path.join(__dirname, './frontend/build')));
 
 const dbURI =
   'mongodb+srv://' +
@@ -23,7 +27,7 @@ console.log(dbURI);
 mongoose
   .connect(dbURI)
   .then((result) => {
-    const PORT = process.env.PORT || 5000;
+    const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => console.log('Listening on ' + PORT));
     console.log('Connected to DB');
   })
@@ -68,7 +72,7 @@ Movie.find()
 */
 
 // API GET
-app.get('/movies', async (req, res) => {
+app.get('/api/movies', async (req, res) => {
   try {
     const movies = await Movie.find();
     res.json(movies);
@@ -79,7 +83,7 @@ app.get('/movies', async (req, res) => {
 });
 
 // API POST
-app.post('/movies', async (req, res) => {
+app.post('/api/movies', async (req, res) => {
   try {
     // ota data requestista
     const { title, year, director, runtime, rating, description, genre, image } =
@@ -108,7 +112,7 @@ app.post('/movies', async (req, res) => {
 });
 
 // API DELETE
-app.delete('/movies/:id', async (req, res) => {
+app.delete('/api/movies/:id', async (req, res) => {
   try {
     // Ota elokuvan id requestista
     const movieID = req.params.id;
@@ -129,7 +133,7 @@ app.delete('/movies/:id', async (req, res) => {
 });
 
 // API UPDATE (PATCH)
-app.patch('/movies/:id', async (req, res) => {
+app.patch('./api/movies/:id', async (req, res) => {
   try {
     // Päivitettävä elokuva valitaan id:n perusteella
     const filter = { _id: req.params.id };
@@ -168,6 +172,12 @@ app.patch('/movies/:id', async (req, res) => {
     console.log(error);
     res.status(500).json({ message: 'Server error' });
   }
+});
+
+
+// Handle other routes by serving the React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
 });
 
 module.exports = app;
