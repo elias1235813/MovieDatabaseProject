@@ -7,6 +7,19 @@ function Elokuvalista(){
   const [leffat, setMovies] = useState([]);
 
   useEffect(() => {
+    fetchData();
+  }, []); // Empty dependency array means this effect will run only once after the initial render
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch('/api/movies');
+      const data = await response.json();
+      setMovies(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  /* useEffect(() => {
     axios.get('http://localhost:3000/api/movies')
       .then(response => {
         setMovies(response.data);
@@ -15,25 +28,25 @@ function Elokuvalista(){
       .catch(error => {
         console.error('Elokuvien hakeminen epäonnistui', error);
       });
-  }, []); // Empty dependency array ensures this effect runs only once after initial render
-
+  }, []); // Empty dependency array ensures this effect runs only once after initial render */
   
   return (
     <section className="movie-list">
       {leffat.map((leffa) => (
         <ElokuvaKortti
           key={leffa._id}
-          id={leffa._id}
-          nimi={leffa.title}
-          julkaisuvuosi={leffa.year}
-          kuvaus={leffa.description}
-          kuvaURL={leffa.image}
+          _id={leffa._id}
+          image={leffa.image}
+          title={leffa.title}
+          year={leffa.year}
+          description={leffa.description}
         />
       ))}
     </section>
   );
 
 }
+
 
 /*
 const ElokuvaLista = () => {
