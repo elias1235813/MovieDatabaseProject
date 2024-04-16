@@ -15,7 +15,8 @@ function Elokuvalista(){
       .catch(error => {
         console.error('Elokuvien hakeminen epäonnistui', error);
       });
-  }, []);
+  }, []); // Empty dependency array ensures this effect runs only once after initial render
+
   
   return (
     <section className="movie-list">

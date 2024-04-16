@@ -23,7 +23,7 @@ const dbURI =
   process.env.DB +
   '?retryWrites=true&w=majority&appName=Cluster0';
 console.log(dbURI);
-
+// jnj
 mongoose
   .connect(dbURI)
   .then((result) => {
