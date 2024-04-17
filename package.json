@@ -4,7 +4,9 @@
   "description": "Projektin aihe: Toteutetaan verkkosivu, jossa on elokuvalistaus. Etusivulla pienet tietokortit, klikkaamalla avautuu laajemmat tiedot.\r Elokuvan tietoja:\r nimi,\r ohjaaja,\r vuosi,\r kesto,\r arvostelut,\r kuvaus,\r kuva,\r kategoria. \r Extraa: tykkäykset, yhdistäminen imdb:hen tms.\r Kahdenlaisia käyttäjiä: peruskäyttäjä/katselija, joka voi lukea ja suodattaa elokuvia sekä admin käyttäjä, joka voi lisätä, päivittää ja poistaa elokuvia.\r Teknologiat: Node.js, Handlebars, MongoDB",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index",
+    "dev": "concurrently \"npm:dev-*\"",
+    "dev-frontend": "npm --prefix frontend start",
+    "dev-backend":"nodemon index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -17,6 +19,7 @@
     "mongoose": "^8.3.1"
   },
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "nodemon": "^3.1.0"
   }
 }

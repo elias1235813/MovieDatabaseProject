@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import ElokuvaKortti from './ElokuvaKortti';
-import axios from 'axios';
+// import axios from 'axios';
 
-
-function Elokuvalista(){
+function Elokuvalista() {
   const [leffat, setMovies] = useState([]);
 
   useEffect(() => {
@@ -29,7 +28,7 @@ function Elokuvalista(){
         console.error('Elokuvien hakeminen epäonnistui', error);
       });
   }, []); // Empty dependency array ensures this effect runs only once after initial render */
-  
+
   return (
     <section className="movie-list">
       {leffat.map((leffa) => (
@@ -44,9 +43,7 @@ function Elokuvalista(){
       ))}
     </section>
   );
-
 }
-
 
 /*
 const ElokuvaLista = () => {
