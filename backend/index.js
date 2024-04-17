@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 
 // Frontin syöttäminen backendiin
-app.use(express.static(path.join(__dirname, './frontend/build')));
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 const dbURI =
   'mongodb+srv://' +
@@ -35,13 +35,11 @@ mongoose
     console.log(err);
   });
 
-
 // API GET
 app.get('/api/movies', async (req, res) => {
   try {
     const movies = await Movie.find();
     res.json(movies);
-    
   } catch (error) {
     console.log(error);
   }
@@ -51,8 +49,16 @@ app.get('/api/movies', async (req, res) => {
 app.post('/api/movies', async (req, res) => {
   try {
     // ota data requestista
-    const { title, year, director, runtime, rating, description, genre, image } =
-      req.body;
+    const {
+      title,
+      year,
+      director,
+      runtime,
+      rating,
+      description,
+      genre,
+      image,
+    } = req.body;
 
     // Lisää uusi elokuva
     const newMovie = new Movie({
@@ -138,7 +144,6 @@ app.patch('./api/movies/:id', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
-
 
 // Handle other routes by serving the React app
 app.get('*', (req, res) => {

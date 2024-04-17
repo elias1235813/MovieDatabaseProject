@@ -6,7 +6,7 @@ const ElokuvaKortti = ({ _id, image, title, year, description }) => {
     <div className="card mb-3">
       <div className="row g-0">
         <div className="col-md-4">
-          <img src={image} class="img-fluid rounded-start" alt={title} />
+          <img src={image} className="img-fluid rounded-start" alt={title} />
         </div>
         <div className="col-md-8">
           <div className="card-body">
