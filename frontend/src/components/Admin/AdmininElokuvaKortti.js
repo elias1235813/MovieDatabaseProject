@@ -1,21 +1,65 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ElokuvakortinTiedot from './ElokuvakortinTiedot';
+import ElokuvakorttiMuokkaus from './ElokuvakorttiMuokkaus';
 
-const AdmininElokuvaKortti = ({ image, director, title, year, description, rating }) => {
+const AdmininElokuvaKortti = ({
+  image,
+  director,
+  title,
+  year,
+  description,
+  rating,
+  genre,
+}) => {
+  // Muokkausnapin logiikka
+  const [muokkausPaalla, setMuokkausPaalla] = useState(false);
+  const [leffa, setLeffa] = useState({
+    title,
+    director,
+    year,
+    description,
+    rating,
+    genre,
+  });
+  let muokkausNapinTeksti = '';
+  let kortinNakyma;
+  const muokkausfunktio = (leffanMuokattavaKohta, uusiTieto) => {
+    console.log(leffanMuokattavaKohta, uusiTieto);
+    setLeffa({
+      ...leffa,
+
+      [leffanMuokattavaKohta]: uusiTieto,
+    });
+  };
+  if (!muokkausPaalla) {
+    muokkausNapinTeksti = 'Muokkaa';
+    kortinNakyma = <ElokuvakortinTiedot leffa={leffa} />;
+  } else {
+    muokkausNapinTeksti = 'Peruuta';
+    kortinNakyma = (
+      <ElokuvakorttiMuokkaus leffa={leffa} muokkausfunktio={muokkausfunktio} />
+    );
+  }
   return (
-    <div class="card mb-3">
-      <div class="row g-0">
-        <div class="col-md-4">
-          <img src={image} class="img-fluid rounded-start" alt={title} />
+    <div className="card mb-3">
+      <div className="row g-0">
+        <div className="col-md-4">
+          <img src={image} className="img-fluid rounded-start" alt={title} />
         </div>
-        <div class="col-md-8">
-          <div class="card-body">
-            <h5 className="card-title">Nimi: {title}</h5>
-            <p className="card-text">Ohjaaja: {director}</p>
-            <p className="card-text">Julkaisuvuosi: {year}</p>
-            <p className="card-text">Kuvaus: {description}</p>
-            <p className="card-text">Arviot: {rating}</p>
-            <button className="btn btn-outline-success">Muokkaa</button>
+        <div className="col-md-8">
+          <div className="card-body">
+            {kortinNakyma}{' '}
+            {/**Sisältö vaihtuu sen mukaan, onko muokkaus päällä vai ei */}
+            <button
+              onClick={() => setMuokkausPaalla(!muokkausPaalla)}
+              className="btn btn-outline-success"
+            >
+              {muokkausNapinTeksti}
+            </button>
             <button className="btn btn-outline-success">Poista</button>
+            {muokkausPaalla && (
+              <button className="btn btn-outline-success">Tallenna</button>
+            )}
           </div>
         </div>
       </div>

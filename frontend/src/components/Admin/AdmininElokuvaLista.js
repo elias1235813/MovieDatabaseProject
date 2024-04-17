@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdmininElokuvaKortti from './AdmininElokuvaKortti';
 
-function AdmininElokuvaLista(){
+function AdmininElokuvaLista() {
   const [leffat, setMovies] = useState([]);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ function AdmininElokuvaLista(){
       console.error('Elokuvien hakeminen epäonnistui:', error);
     }
   };
-  
+
   return (
     <section className="movie-list">
       {leffat.map((leffa) => (
@@ -30,11 +30,11 @@ function AdmininElokuvaLista(){
           year={leffa.year}
           rating={leffa.rating}
           description={leffa.description}
+          genre={leffa.genre}
         />
       ))}
     </section>
   );
-
 }
 
 export default AdmininElokuvaLista;
