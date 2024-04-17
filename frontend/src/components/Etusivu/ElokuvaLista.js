@@ -16,7 +16,7 @@ function Elokuvalista(){
       const data = await response.json();
       setMovies(data);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Elokuvien hakeminen epäonnistui:', error);
     }
   };
   /* useEffect(() => {

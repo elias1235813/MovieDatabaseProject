@@ -1,46 +1,145 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const LisaaElokuva = () => {
+  // State variables to hold form data
+  const [formData, setFormData] = useState({
+    title: '',
+    year: '',
+    director: '',
+    runtime: '',
+    rating: '',
+    description: '',
+    genre: '',
+    image: ''
+  });
+
+  // Function to handle form input changes
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  // Function to handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('/api/movies', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+      if (response.ok) {
+        // Movie added successfully
+        console.log('Movie added successfully');
+        // Clear the form
+        setFormData({
+          title: '',
+          year: '',
+          director: '',
+          runtime: '',
+          rating: '',
+          description: '',
+          genre: '',
+          image: ''
+        });
+      } else {
+        console.error('Failed to add movie');
+      }
+    } catch (error) {
+      console.error('Error adding movie:', error);
+    }
+  };
+
   return (
     <section className="adminosio">
       <h2>Lisää elokuva</h2>
-
-      {/* Form ei vielä saavutettava, vasta alustava versio */}
-      <form>
-        <label for="nimi" className="form-label">
+        <form onSubmit={handleSubmit}>
+        <label htmlFor="title" className="form-label">
           Nimi
         </label>
-        <input type="text" className="form-control" id="nimi" />
-
-        <label for="vuosi" className="form-label">
+        <input
+          type="text"
+          className="form-control"
+          id="title"
+          value={formData.title}
+          onChange={handleInputChange}
+        />
+        <label htmlFor="year" className="form-label">
           Julkaisuvuosi
         </label>
-        <input type="number" className="form-control" id="vuosi" />
+        <input
+          type="number"
+          className="form-control"
+          id="year"
+          value={formData.year}
+          onChange={handleInputChange}
+        />
 
-        <label for="kesto" className="form-label">
-          Kesto
-        </label>
-        <input type="text" className="form-control" id="kesto" />
-
-        <label for="ohjaaja" className="form-label">
+        <label htmlFor="director" className="form-label">
           Ohjaaja
         </label>
-        <input type="text" className="form-control" id="ohjaaja" />
+        <input
+          type="text"
+          className="form-control"
+          id="director"
+          value={formData.director}
+          onChange={handleInputChange}
+        />
 
-        <label for="arviot" className="form-label">
+        <label htmlFor="runtime" className="form-label">
+          Kesto
+        </label>
+        <input
+          type="text"
+          className="form-control"
+          id="runtime"
+          value={formData.runtime}
+          onChange={handleInputChange}
+        />
+
+        <label htmlFor="rating" className="form-label">
           Arviot
         </label>
-        <input type="number" className="form-control" id="arviot" />
+        <input
+          type="number"
+          className="form-control"
+          id="rating"
+          value={formData.rating}
+          onChange={handleInputChange}
+        />
 
-        <label for="genre" className="form-label">
+        <label htmlFor="description" className="form-label">
+          Kuvaus
+        </label>
+        <textarea
+          className="form-control"
+          id="description"
+          value={formData.description}
+          onChange={handleInputChange}
+        />
+
+        <label htmlFor="genre" className="form-label">
           Genre
         </label>
-        <input type="text" className="form-control" id="genre" />
+        <input
+          type="text"
+          className="form-control"
+          id="genre"
+          value={formData.genre}
+          onChange={handleInputChange}
+        />
 
-        <label for="kuvaURL" className="form-label">
+        <label htmlFor="image" className="form-label">
           Kuvan URL
         </label>
-        <input type="text" className="form-control" id="kuvaURL" />
+        <input
+          type="text"
+          className="form-control"
+          id="image"
+          value={formData.image}
+          onChange={handleInputChange}
+          />
 
         <button type="submit" className="btn btn-outline-success">
           Tallenna
