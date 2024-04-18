@@ -45,6 +45,18 @@ app.get('/api/movies', async (req, res) => {
   }
 });
 
+//API GET ONE BY ID
+
+app.get('/api/movies/:id', async (req, res) =>{
+  try {
+    const movies = await Movie.findById(req.params.id);
+    res.json(movies);
+  } catch (error) {
+    console.log(error);
+  }
+
+})
+
 // API POST
 app.post('/api/movies', async (req, res) => {
   try {
