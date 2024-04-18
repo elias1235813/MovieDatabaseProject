@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently \"npm:dev-*\"",
     "dev-frontend": "npm --prefix ../frontend start",
-    "dev-backend":"nodemon index",
+    "dev-backend": "nodemon index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -19,6 +19,7 @@
     "mongoose": "^8.3.1"
   },
   "devDependencies": {
+    "@babel/plugin-transform-private-property-in-object": "^7.24.1",
     "concurrently": "^8.2.2",
     "nodemon": "^3.1.0"
   }

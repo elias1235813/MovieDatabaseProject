@@ -147,7 +147,8 @@ app.patch('./api/movies/:id', async (req, res) => {
 
 // Handle other routes by serving the React app
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, '../frontend', 'build', 'index.html'));
 });
+
 
 module.exports = app;
