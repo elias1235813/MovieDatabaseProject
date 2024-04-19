@@ -11,7 +11,6 @@ const AdminNakyma = () => {
         tietoja sekä poistaa elokuvia tietokannasta.
       </p>
       <hr></hr>
-      {/* TODO myöhemmin: elokuvan poistaminen ja muokkaaminen */}
       <LisaaElokuva />
       <hr></hr>
       <MuokkaaJaPoistaElokuva />

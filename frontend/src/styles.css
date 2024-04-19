@@ -41,8 +41,15 @@ footer {
     padding-top: 50px;
     padding-bottom: 50px; }
 
-form input{
+.admin-elokuvakortti form label{
+        margin-left: 10px;
+    }
+.admin-elokuvakortti  input{
     margin-left: 10px;
+}
+
+ .btn {
+    margin: 10px 10px 10px 10px;
 }
 
 

@@ -10,7 +10,7 @@ const LisaaElokuva = () => {
     rating: '',
     description: '',
     genre: '',
-    image: ''
+    image: '',
   });
 
   // Function to handle form input changes
@@ -25,13 +25,14 @@ const LisaaElokuva = () => {
       const response = await fetch('/api/movies', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
       if (response.ok) {
         // Movie added successfully
         console.log('Movie added successfully');
+        alert('Elokuva lisätty onnistuneesti.');
         // Clear the form
         setFormData({
           title: '',
@@ -41,20 +42,22 @@ const LisaaElokuva = () => {
           rating: '',
           description: '',
           genre: '',
-          image: ''
+          image: '',
         });
       } else {
         console.error('Failed to add movie');
+        alert('Elokuvan lisääminen epäonnistui.');
       }
     } catch (error) {
       console.error('Error adding movie:', error);
+      alert('Elokuvan lisääminen epäonnistui.');
     }
   };
 
   return (
     <section className="adminosio">
       <h2>Lisää elokuva</h2>
-        <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <label htmlFor="title" className="form-label">
           Nimi
         </label>
@@ -139,7 +142,7 @@ const LisaaElokuva = () => {
           id="image"
           value={formData.image}
           onChange={handleInputChange}
-          />
+        />
 
         <button type="submit" className="btn btn-outline-success">
           Tallenna

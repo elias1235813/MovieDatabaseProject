@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import ElokuvakortinTiedot from './ElokuvakortinTiedot';
-import ElokuvakorttiMuokkaus from './ElokuvakorttiMuokkaus';
+import MuokkausElokuvakortti from './MuokkausElokuvakortti';
 
 const AdmininElokuvaKortti = ({
   leffa,
   onDelete, // Receive onDelete as a prop
+  onUpdate, // Funktio, jota kutsutaan, kun Tallenna-nappia klikataan
 }) => {
   // LEFFAN TIETOJEN PÄIVITTÄMINEN
+
   // Kopioidaan muokkausta varten kortilla olevan leffan tiedot
   const [muokattavaLeffa, setMuokattuLeffa] = useState({
     ...leffa,
   });
 
-  // Funktio, joka päivittää statessa olevan elokuvan tietoja
-  // (tehty https://www.w3schools.com/react/react_forms.asp pohjalta)
+  // FUNKTIO, JOKA PÄIVITTÄÄ STATESSA OLEVAN (KOPIOIDUN) LEFFAN TIETOJA:
   const muokkausFunktio = (event) => {
     //Aluksi kopioidaan muokattavan leffan tiedot:
     const paivitettyLeffa = {
@@ -24,12 +25,12 @@ const AdmininElokuvaKortti = ({
     setMuokattuLeffa(paivitettyLeffa);
   };
 
-  // Oletuksena elokuvan tietojen muokkaustila ei päällä:
+  // OLETUSASETUS: MUOKKAUSTILA EI PÄÄLLÄ:
   const [muokkausPaalla, setMuokkausPaalla] = useState(false);
 
   // KOKO KORTIN HTML:
   return (
-    <div className="card mb-3">
+    <div className="card mb-3 admin-elokuvakortti">
       <div className="row g-0">
         <div className="col-md-4">
           <img
@@ -40,15 +41,15 @@ const AdmininElokuvaKortti = ({
         </div>
         <div className="col-md-8">
           <div className="card-body">
-            {/* Näkymän valinta: normaali vai muokkaustila? */}
+            {/* Näkymän valinta: normaali tai muokkaustila */}
             {muokkausPaalla ? (
               // Jos muokkaus on päällä, näytetään muokkausnäkymä:
-              <ElokuvakorttiMuokkaus
+              <MuokkausElokuvakortti
                 leffa={muokattavaLeffa}
                 muokkausfunktio={muokkausFunktio}
               />
             ) : (
-              // Jos muokkaus ei päällä, näytetään normaalinäkymä:
+              // Jos muokkaus ei päällä, näytetään normaali näkymä:
               <ElokuvakortinTiedot leffa={leffa} />
             )}
 
@@ -73,7 +74,16 @@ const AdmininElokuvaKortti = ({
 
             {/* TALLENNUSNAPPI */}
             {muokkausPaalla && (
-              <button className="btn btn-outline-success">Tallenna</button>
+              <button
+                onClick={() => {
+                  // Muokattavaa leffaa on jo muokattu, joten sen tietoja käytetään päivityksessä:
+                  onUpdate(muokattavaLeffa);
+                  setMuokkausPaalla(false);
+                }}
+                className="btn btn-outline-success"
+              >
+                Tallenna
+              </button>
             )}
           </div>
         </div>

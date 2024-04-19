@@ -47,43 +47,38 @@ app.get('/api/movies', async (req, res) => {
 
 //API GET ONE BY ID
 
-app.get('/api/movies/:id', async (req, res) =>{
+app.get('/api/movies/:id', async (req, res) => {
   try {
     const movies = await Movie.findById(req.params.id);
     res.json(movies);
   } catch (error) {
     console.log(error);
   }
-
-})
+});
 
 // API GET BY GENRE
 
-app.get('/api/movies/genre/:genre', async (req, res) =>{
+app.get('/api/movies/genre/:genre', async (req, res) => {
   try {
     const genre = req.params.genre;
-    const movies = await Movie.find({genre: genre});
+    const movies = await Movie.find({ genre: genre });
     res.json(movies);
   } catch (error) {
     console.log(error);
   }
-
-})
+});
 
 // API GET BY TITLE
 
-app.get('/api/movies/title/:title', async (req, res) =>{
+app.get('/api/movies/title/:title', async (req, res) => {
   try {
     const title = req.params.title;
-    const movies = await Movie.find({title: title});
+    const movies = await Movie.find({ title: title });
     res.json(movies);
   } catch (error) {
     console.log(error);
   }
-
-})
-
-
+});
 
 // API POST
 app.post('/api/movies', async (req, res) => {
@@ -144,7 +139,7 @@ app.delete('/api/movies/:id', async (req, res) => {
 });
 
 // API UPDATE (PATCH)
-app.patch('./api/movies/:id', async (req, res) => {
+app.patch('/api/movies/:id', async (req, res) => {
   try {
     // Päivitettävä elokuva valitaan id:n perusteella
     const filter = { _id: req.params.id };
@@ -189,6 +184,5 @@ app.patch('./api/movies/:id', async (req, res) => {
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend', 'build', 'index.html'));
 });
-
 
 module.exports = app;
