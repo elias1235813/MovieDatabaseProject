@@ -57,6 +57,34 @@ app.get('/api/movies/:id', async (req, res) =>{
 
 })
 
+// API GET BY GENRE
+
+app.get('/api/movies/genre/:genre', async (req, res) =>{
+  try {
+    const genre = req.params.genre;
+    const movies = await Movie.find({genre: genre});
+    res.json(movies);
+  } catch (error) {
+    console.log(error);
+  }
+
+})
+
+// API GET BY TITLE
+
+app.get('/api/movies/title/:title', async (req, res) =>{
+  try {
+    const title = req.params.title;
+    const movies = await Movie.find({title: title});
+    res.json(movies);
+  } catch (error) {
+    console.log(error);
+  }
+
+})
+
+
+
 // API POST
 app.post('/api/movies', async (req, res) => {
   try {
