@@ -21,11 +21,11 @@ function AdmininElokuvaLista() {
   const poistaElokuva = async (movieId) => {
     try {
       const response = await fetch(`/api/movies/${movieId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       });
       if (response.ok) {
         // If delete is successful, remove the movie from the list
-        setMovies(leffat.filter(movie => movie._id !== movieId));
+        setMovies(leffat.filter((movie) => movie._id !== movieId));
         console.log('Movie deleted successfully');
       } else {
         console.error('Failed to delete movie');
@@ -40,14 +40,7 @@ function AdmininElokuvaLista() {
       {leffat.map((leffa) => (
         <AdmininElokuvaKortti
           key={leffa._id}
-          _id={leffa._id}
-          image={leffa.image}
-          title={leffa.title}
-          director={leffa.director}
-          year={leffa.year}
-          rating={leffa.rating}
-          description={leffa.description}
-          genre={leffa.genre}
+          leffa={leffa}
           onDelete={() => poistaElokuva(leffa._id)} // Pass handleDelete function to child component
         />
       ))}

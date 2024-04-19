@@ -4,28 +4,70 @@ const ElokuvakorttiMuokkaus = ({ leffa, muokkausfunktio }) => {
   return (
     <>
       <form>
-        <h5 className="card-title">
-          Nimi:{' '}
-          <input
-            value={leffa.title}
-            onChange={(event) => muokkausfunktio('title', event.target.value)}
-          ></input>
-        </h5>
-        {/* <p className="card-text">
-          Ohjaaja: <input value={leffa.director}></input>
+        <p className="card-text">
+          <label>
+            Nimi:
+            {/* Name laitetaan inputiin mukaan, jotta
+          muokkaus pystytään kohdistamaan oikeaan kenttään */}
+            <input
+              name="title"
+              value={leffa.title}
+              onChange={muokkausfunktio}
+            ></input>
+          </label>
         </p>
         <p className="card-text">
-          Julkaisuvuosi: <input type="number" value={leffa.year}></input>
+          <label>
+            Ohjaaja:
+            <input
+              name="director"
+              value={leffa.director}
+              onChange={muokkausfunktio}
+            ></input>
+          </label>
         </p>
         <p className="card-text">
-          Kuvaus: <input value={leffa.description}></input>
+          <label>
+            Julkaisuvuosi:
+            <input
+              name="year"
+              type="number"
+              value={leffa.year}
+              onChange={muokkausfunktio}
+            ></input>
+          </label>
         </p>
         <p className="card-text">
-          Arviot: <input type="number" value={leffa.rating}></input>
+          <label>
+            Kuvaus:
+            <input
+              name="description"
+              value={leffa.description}
+              onChange={muokkausfunktio}
+            ></input>
+          </label>
         </p>
         <p className="card-text">
-          Genre: <input value={leffa.genre}></input>
-        </p> */}
+          <label>
+            Arviot:
+            <input
+              name="rating"
+              type="number"
+              value={leffa.rating}
+              onChange={muokkausfunktio}
+            ></input>
+          </label>
+        </p>
+        <p className="card-text">
+          <label>
+            Genre:
+            <input
+              name="genre"
+              value={leffa.genre}
+              onChange={muokkausfunktio}
+            ></input>
+          </label>
+        </p>
       </form>
     </>
   );

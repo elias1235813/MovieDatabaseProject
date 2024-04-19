@@ -3,62 +3,81 @@ import ElokuvakortinTiedot from './ElokuvakortinTiedot';
 import ElokuvakorttiMuokkaus from './ElokuvakorttiMuokkaus';
 
 const AdmininElokuvaKortti = ({
-  image,
-  director,
-  title,
-  year,
-  description,
-  rating,
-  genre,
+  leffa,
   onDelete, // Receive onDelete as a prop
 }) => {
-  // Muokkausnapin logiikka
-  const [muokkausPaalla, setMuokkausPaalla] = useState(false);
-  const [leffa, setLeffa] = useState({
-    title,
-    director,
-    year,
-    description,
-    rating,
-    genre,
+  // LEFFAN TIETOJEN PÄIVITTÄMINEN
+
+  //Kopiodaan muokkausta varten kortilla olevan leffan tiedot
+  const [muokattavaLeffa, setMuokattuLeffa] = useState({
+    ...leffa,
   });
+
+  // Funktio, joka päivittää statessa olevan elokuvan tietoja
+  // (tehty https://www.w3schools.com/react/react_forms.asp pohjalta)
+  const muokkausFunktio = (event) => {
+    //Aluksi kopioidaan muokattavan leffan tiedot:
+    const paivitettyLeffa = {
+      ...muokattavaLeffa,
+    };
+    // Korvataan muokattu kohda uudella tiedolla:
+    paivitettyLeffa[event.target.name] = event.target.value;
+    setMuokattuLeffa(paivitettyLeffa);
+  };
+
+  // Oletuksena elokuvan tietojen muokkaustila ei päällä:
+  const [muokkausOnOff, setMuokkausOnOff] = useState(false);
+
+  // Muokkausnappi ja kortin näkymä (vaihtelee muokkaustilan mukaan)
   let muokkausNapinTeksti = '';
   let kortinNakyma;
-  const muokkausfunktio = (leffanMuokattavaKohta, uusiTieto) => {
-    console.log(leffanMuokattavaKohta, uusiTieto);
-    setLeffa({
-      ...leffa,
 
-      [leffanMuokattavaKohta]: uusiTieto,
-    });
-  };
-  if (!muokkausPaalla) {
+  /* Jos muokkaustila ei ole päällä, napista saa muokkaustilan päälle.
+    Jos muokkaustila on päällä, samasta napista voi peruuttaa muokkaustilan ja palata ns. normaaliin näkymään. */
+  if (!muokkausOnOff) {
     muokkausNapinTeksti = 'Muokkaa';
     kortinNakyma = <ElokuvakortinTiedot leffa={leffa} />;
   } else {
     muokkausNapinTeksti = 'Peruuta';
     kortinNakyma = (
-      <ElokuvakorttiMuokkaus leffa={leffa} muokkausfunktio={muokkausfunktio} />
+      <ElokuvakorttiMuokkaus
+        leffa={muokattavaLeffa}
+        muokkausfunktio={muokkausFunktio}
+      />
     );
   }
+
+  // Koko kortin html:
   return (
     <div className="card mb-3">
       <div className="row g-0">
         <div className="col-md-4">
-          <img src={image} className="img-fluid rounded-start" alt={title} />
+          <img
+            src={leffa.image}
+            className="img-fluid rounded-start"
+            alt={leffa.title}
+          />
         </div>
         <div className="col-md-8">
           <div className="card-body">
-            {kortinNakyma}{' '}
-            {/**Sisältö vaihtuu sen mukaan, onko muokkaus päällä vai ei */}
+            {/* Muokkausnäkymä tai ns. normaali näkymä: */}
+            {kortinNakyma}
+
+            {/* Muokkaustila päälle/pois -nappi */}
             <button
-              onClick={() => setMuokkausPaalla(!muokkausPaalla)}
+              onClick={() => setMuokkausOnOff(!muokkausOnOff)}
               className="btn btn-outline-success"
             >
               {muokkausNapinTeksti}
             </button>
-            <button onClick={onDelete} className="btn btn-outline-success">Poista</button>
-            {muokkausPaalla && (
+
+            {/* Poistonappi */}
+            <button onClick={onDelete} className="btn btn-outline-success">
+              Poista
+            </button>
+
+            {/* Tallennusnappi */}
+            {muokkausOnOff && (
               <button className="btn btn-outline-success">Tallenna</button>
             )}
           </div>
