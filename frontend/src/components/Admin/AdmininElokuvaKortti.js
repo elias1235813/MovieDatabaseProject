@@ -7,8 +7,7 @@ const AdmininElokuvaKortti = ({
   onDelete, // Receive onDelete as a prop
 }) => {
   // LEFFAN TIETOJEN PÄIVITTÄMINEN
-
-  //Kopiodaan muokkausta varten kortilla olevan leffan tiedot
+  // Kopioidaan muokkausta varten kortilla olevan leffan tiedot
   const [muokattavaLeffa, setMuokattuLeffa] = useState({
     ...leffa,
   });
@@ -26,28 +25,9 @@ const AdmininElokuvaKortti = ({
   };
 
   // Oletuksena elokuvan tietojen muokkaustila ei päällä:
-  const [muokkausOnOff, setMuokkausOnOff] = useState(false);
+  const [muokkausPaalla, setMuokkausPaalla] = useState(false);
 
-  // Muokkausnappi ja kortin näkymä (vaihtelee muokkaustilan mukaan)
-  let muokkausNapinTeksti = '';
-  let kortinNakyma;
-
-  /* Jos muokkaustila ei ole päällä, napista saa muokkaustilan päälle.
-    Jos muokkaustila on päällä, samasta napista voi peruuttaa muokkaustilan ja palata ns. normaaliin näkymään. */
-  if (!muokkausOnOff) {
-    muokkausNapinTeksti = 'Muokkaa';
-    kortinNakyma = <ElokuvakortinTiedot leffa={leffa} />;
-  } else {
-    muokkausNapinTeksti = 'Peruuta';
-    kortinNakyma = (
-      <ElokuvakorttiMuokkaus
-        leffa={muokattavaLeffa}
-        muokkausfunktio={muokkausFunktio}
-      />
-    );
-  }
-
-  // Koko kortin html:
+  // KOKO KORTIN HTML:
   return (
     <div className="card mb-3">
       <div className="row g-0">
@@ -60,24 +40,39 @@ const AdmininElokuvaKortti = ({
         </div>
         <div className="col-md-8">
           <div className="card-body">
-            {/* Muokkausnäkymä tai ns. normaali näkymä: */}
-            {kortinNakyma}
+            {/* Näkymän valinta: normaali vai muokkaustila? */}
+            {muokkausPaalla ? (
+              // Jos muokkaus on päällä, näytetään muokkausnäkymä:
+              <ElokuvakorttiMuokkaus
+                leffa={muokattavaLeffa}
+                muokkausfunktio={muokkausFunktio}
+              />
+            ) : (
+              // Jos muokkaus ei päällä, näytetään normaalinäkymä:
+              <ElokuvakortinTiedot leffa={leffa} />
+            )}
 
-            {/* Muokkaustila päälle/pois -nappi */}
+            {/* MUOKKAUS/PERUUTUSNAPPI */}
             <button
-              onClick={() => setMuokkausOnOff(!muokkausOnOff)}
+              onClick={() => {
+                setMuokkausPaalla(!muokkausPaalla);
+                if (muokkausPaalla) {
+                  setMuokattuLeffa(leffa); // Jos muokkaustilasta peruutetaan, nollataan lähtötilanteeseen (alkuperäiset leffan tiedot)
+                }
+              }}
               className="btn btn-outline-success"
             >
-              {muokkausNapinTeksti}
+              {/* Buttonin teksti sen muokkaustilassa tai normitilassa: */}
+              {muokkausPaalla ? 'Peruuta' : 'Muokkaa'}
             </button>
 
-            {/* Poistonappi */}
+            {/* POISTONAPPI */}
             <button onClick={onDelete} className="btn btn-outline-success">
               Poista
             </button>
 
-            {/* Tallennusnappi */}
-            {muokkausOnOff && (
+            {/* TALLENNUSNAPPI */}
+            {muokkausPaalla && (
               <button className="btn btn-outline-success">Tallenna</button>
             )}
           </div>
