@@ -18,6 +18,23 @@ function AdmininElokuvaLista() {
     }
   };
 
+  const poistaElokuva = async (movieId) => {
+    try {
+      const response = await fetch(`/api/movies/${movieId}`, {
+        method: 'DELETE'
+      });
+      if (response.ok) {
+        // If delete is successful, remove the movie from the list
+        setMovies(leffat.filter(movie => movie._id !== movieId));
+        console.log('Movie deleted successfully');
+      } else {
+        console.error('Failed to delete movie');
+      }
+    } catch (error) {
+      console.error('Error deleting movie:', error);
+    }
+  };
+
   return (
     <section className="movie-list">
       {leffat.map((leffa) => (
@@ -31,10 +48,10 @@ function AdmininElokuvaLista() {
           rating={leffa.rating}
           description={leffa.description}
           genre={leffa.genre}
+          onDelete={() => poistaElokuva(leffa._id)} // Pass handleDelete function to child component
         />
       ))}
     </section>
   );
 }
-
 export default AdmininElokuvaLista;

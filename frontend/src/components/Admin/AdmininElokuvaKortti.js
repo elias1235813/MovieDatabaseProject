@@ -10,6 +10,7 @@ const AdmininElokuvaKortti = ({
   description,
   rating,
   genre,
+  onDelete, // Receive onDelete as a prop
 }) => {
   // Muokkausnapin logiikka
   const [muokkausPaalla, setMuokkausPaalla] = useState(false);
@@ -56,7 +57,7 @@ const AdmininElokuvaKortti = ({
             >
               {muokkausNapinTeksti}
             </button>
-            <button className="btn btn-outline-success">Poista</button>
+            <button onClick={onDelete} className="btn btn-outline-success">Poista</button>
             {muokkausPaalla && (
               <button className="btn btn-outline-success">Tallenna</button>
             )}
