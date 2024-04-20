@@ -16,8 +16,7 @@ const AdminLogin = ({ onLogin }) => {
         body: JSON.stringify({ username, password })
       });
       if (response.ok) {
-        // No need to handle session token anymore
-        onLogin(); // Set the state to indicate that the user is logged in
+        onLogin();
       } else {
         setError('Login failed');
       }
