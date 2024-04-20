@@ -44,6 +44,7 @@ const LisaaElokuva = () => {
           genre: '',
           image: '',
         });
+        location.reload()
       } else {
         console.error('Failed to add movie');
         alert('Elokuvan lisääminen epäonnistui.');
