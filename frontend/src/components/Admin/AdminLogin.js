@@ -13,14 +13,13 @@ const AdminLogin = ({ onLogin }) => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, password }) //Lähetä käyttäjä ja salasana backendiin
+        body: JSON.stringify({ username, password })
       });
-      const data = await response.json();
-
       if (response.ok) {
-        onLogin(); // Kutsu onLogin backendista
+        // No need to handle session token anymore
+        onLogin(); // Set the state to indicate that the user is logged in
       } else {
-        setError(data.message || 'Login failed');
+        setError('Login failed');
       }
     } catch (error) {
       setError('Login failed');
@@ -28,6 +27,7 @@ const AdminLogin = ({ onLogin }) => {
     }
   };
 
+  
   return (
     <div>
       <h2>Admin Login</h2>

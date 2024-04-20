@@ -4,12 +4,24 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 const Movie = require('./models/Movie');
+const session = require('express-session');
 
 const app = express();
 
 // Middleware
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(session({
+  secret: 'SgMvi9ivQdXMiQMTCQUr',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    sameSite: 'None',
+    secure: true,
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000, // Set to 1 day (in milliseconds)
+  }
+}));
 
 // Frontin syöttäminen backendiin
 app.use(express.static(path.join(__dirname, '../frontend/build')));
@@ -45,7 +57,6 @@ const adminCredentials = {
 // Admin login
 app.post('/admin/login', (req, res) => {
   const { username, password } = req.body;
-  // Onko käyttäjä ja salasana oikein
   if (username === adminCredentials.username && password === adminCredentials.password) {
     res.status(200).json({ message: 'Login successful' });
   } else {
@@ -53,6 +64,28 @@ app.post('/admin/login', (req, res) => {
   }
 });
 
+// Example protected route
+app.get('/admin/data', (req, res) => {
+  if (req.session.isLoggedIn) {
+    // Return data if user is logged in
+    res.json({ data: 'Protected data' });
+  } else {
+    res.status(401).json({ message: 'Unauthorized' });
+  }
+});
+
+// Logout
+app.post('/admin/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Error logging out:', err);
+      res.status(500).json({ message: 'Logout failed' });
+    } else {
+      res.clearCookie('connect.sid'); // Clear the session cookie
+      res.status(200).json({ message: 'Logout successful' });
+    }
+  });
+});
 // API GET
 app.get('/api/movies', async (req, res) => {
   try {

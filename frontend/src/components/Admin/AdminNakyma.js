@@ -1,13 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AdminLogin from './AdminLogin';
 import LisaaElokuva from './LisaaElokuva.js';
 import MuokkaaJaPoistaElokuva from './MuokkaaJaPoistaElokuva.js';
+import Logout from './logout.js';
 
 const AdminNakyma = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleLogin = () => {
+  useEffect(() => {
+    // Check if session token exists in local storage
+    const token = localStorage.getItem('sessionToken');
+    if (token) {
+      setIsLoggedIn(true); // User is considered logged in
+    }
+  }, []);
+
+  const handleLogin = async () => {
+    // Upon successful login, set session token in local storage
+    localStorage.setItem('sessionToken', 'your_session_token_here');
     setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    // Clear session token from local storage and reset isLoggedIn state
+    localStorage.removeItem('sessionToken');
+    setIsLoggedIn(false);
   };
 
   return (
@@ -23,6 +40,7 @@ const AdminNakyma = () => {
           <LisaaElokuva />
           <hr />
           <MuokkaaJaPoistaElokuva />
+          <Logout onLogout={handleLogout} className="logout-button" />
         </>
       ) : (
         <AdminLogin onLogin={handleLogin} />
