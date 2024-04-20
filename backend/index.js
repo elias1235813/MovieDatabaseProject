@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 require('dotenv').config();
 const Movie = require('./models/Movie');
 
@@ -8,6 +9,7 @@ const app = express();
 
 // Middleware
 app.use(express.json());
+app.use(bodyParser.json());
 
 // Frontin syöttäminen backendiin
 app.use(express.static(path.join(__dirname, '../frontend/build')));
@@ -34,6 +36,22 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+// Käyttäjä ja salasana
+const adminCredentials = {
+  username: process.env.ADMIN_USERNAME || 'admin',
+  password: process.env.ADMIN_PASSWORD || 'admin123'
+};
+
+// Admin login
+app.post('/admin/login', (req, res) => {
+  const { username, password } = req.body;
+  // Onko käyttäjä ja salasana oikein
+  if (username === adminCredentials.username && password === adminCredentials.password) {
+    res.status(200).json({ message: 'Login successful' });
+  } else {
+    res.status(401).json({ message: 'Invalid username or password' });
+  }
+});
 
 // API GET
 app.get('/api/movies', async (req, res) => {
