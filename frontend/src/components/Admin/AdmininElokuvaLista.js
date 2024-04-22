@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import AdmininElokuvaKortti from './AdmininElokuvaKortti';
 
+const elokuvanDetailitSuomeksi = {
+  title: 'Nimi',
+  director: 'Ohjaaja',
+  year: 'Julkaisuvuosi',
+  rating: 'Arviot',
+  runtime: 'Kesto',
+  description: 'Kuvaus',
+  image: 'Kuvan URL',
+};
+
 function AdmininElokuvaLista() {
   const [leffat, setMovies] = useState([]);
 
@@ -37,6 +47,21 @@ function AdmininElokuvaLista() {
         alert('Elokuvan tiedot päivitetty onnistuneesti.');
         // Haetaan elokuvat uudestaan, jotta päivitetyt tiedot saadaan näkyviin
         await fetchData();
+      } else if (response.status === 400) {
+        const responseBody = await response.json();
+
+        // elokuvanDetailitSuomeksi
+        const virheellisetKentatSuomeksi = responseBody.invalidFields.map(
+          (invalidField) => {
+            return elokuvanDetailitSuomeksi[invalidField];
+          }
+        );
+
+        alert(
+          'Elokuvan tietojen päivittäminen epäonnistui.Tarkista seuraavat kentät: ' +
+            virheellisetKentatSuomeksi.join(', ') +
+            '.'
+        );
       } else {
         console.error('Elokuvan tietojen päivittäminen epäonnistui.');
         alert('Elokuvan tietojen päivittäminen epäonnistui.');

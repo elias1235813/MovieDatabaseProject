@@ -44,7 +44,7 @@ const LisaaElokuva = () => {
           genre: '',
           image: '',
         });
-        location.reload()
+        location.reload();
       } else {
         console.error('Failed to add movie');
         alert('Elokuvan lisääminen epäonnistui.');
@@ -92,7 +92,7 @@ const LisaaElokuva = () => {
         />
 
         <label htmlFor="runtime" className="form-label">
-          Kesto
+          Kesto (muodossa 00h 00m)
         </label>
         <input
           type="text"
@@ -103,10 +103,13 @@ const LisaaElokuva = () => {
         />
 
         <label htmlFor="rating" className="form-label">
-          Arviot
+          Arviot (0,0 - 10,0)
         </label>
         <input
           type="number"
+          step=".1"
+          min="0"
+          max="10"
           className="form-control"
           id="rating"
           value={formData.rating}
@@ -124,7 +127,7 @@ const LisaaElokuva = () => {
         />
 
         <label htmlFor="genre" className="form-label">
-          Genre
+          Genret (pilkulla erotettuna)
         </label>
         <input
           type="text"

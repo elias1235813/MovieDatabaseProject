@@ -1,32 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ElokuvakortinTiedot from './ElokuvakortinTiedot';
 import MuokkausElokuvakortti from './MuokkausElokuvakortti';
+
+// APUFUNKTIOT  ELOKUVAN TIETOJEN PÄIVITTÄMISEEN:
+
+// ARRAY --> STRING:
+// Yhdistetään tietokannasta tulevan elokuvan ohjaaja ja genre taulukoista merkkijonoiksi, jotta ne näkyvät nettisivulla oikein ja jotta niitä voi muokata.
+// Muut leffan tiedot pidetään ennallaan.
+function teeLeffaYhteensopivaksiNakymanKanssa(leffa) {
+  return {
+    ...leffa,
+    director: leffa.director.join(', '),
+    genre: leffa.genre.join(', '),
+  };
+}
+// STRING --> ARRAY:
+// Pilkotaan ohjaaja- ja genre-merkkijonot pilkusta taulukoksi, jotta ne menevät oikeassa muodossa tietokantaan
+// Muut leffan tiedot pidetään ennallaan
+// Turhat välilyönnit trimmataan pois
+function palautaMuokattuLeffaOikeaanMuotoon(muokattuLeffa) {
+  return {
+    ...muokattuLeffa,
+    director: muokattuLeffa.director.split(',').map((item) => item.trim()),
+    genre: muokattuLeffa.genre.split(',').map((item) => item.trim()),
+  };
+}
+
+// VARSINAINEN REACT-KOMPONENTTI ALKAA TÄSTÄ:
 
 const AdmininElokuvaKortti = ({
   leffa,
   onDelete, // Receive onDelete as a prop
   onUpdate, // Funktio, jota kutsutaan, kun Tallenna-nappia klikataan
 }) => {
-  // LEFFAN TIETOJEN PÄIVITTÄMINEN
+  // Oletusasetus: muokkaustila ei päällä
+  const [muokkausPaalla, setMuokkausPaalla] = useState(false);
 
-  // Kopioidaan muokkausta varten kortilla olevan leffan tiedot
-  const [muokattavaLeffa, setMuokattuLeffa] = useState({
-    ...leffa,
-  });
+  // Kopioidaan ja muunnetaan propsina saatu elokuva sopivaan muotoon ja asetetaan se stateen (lomakkeen tila)
+  const [muokattavaLeffa, setMuokattuLeffa] = useState(
+    teeLeffaYhteensopivaksiNakymanKanssa(leffa)
+  );
 
-  // FUNKTIO, JOKA PÄIVITTÄÄ STATESSA OLEVAN (KOPIOIDUN) LEFFAN TIETOJA:
+  // Jos propsina olevan leffan arvo päivittyy, asetetaan statessa oleva muokattavaLeffa vastaamaan uutta arvoa.
+  useEffect(() => {
+    setMuokattuLeffa(teeLeffaYhteensopivaksiNakymanKanssa(leffa));
+  }, [leffa]);
+
+  // Funktio, joka päivittää statessa olevan leffan tietoja (kutsutaan elokuvan muokkauslomakkeessa)
   const muokkausFunktio = (event) => {
     //Aluksi kopioidaan muokattavan leffan tiedot:
     const paivitettyLeffa = {
       ...muokattavaLeffa,
     };
+
     // Korvataan muokattu kohda uudella tiedolla:
     paivitettyLeffa[event.target.name] = event.target.value;
     setMuokattuLeffa(paivitettyLeffa);
   };
-
-  // OLETUSASETUS: MUOKKAUSTILA EI PÄÄLLÄ:
-  const [muokkausPaalla, setMuokkausPaalla] = useState(false);
 
   // KOKO KORTIN HTML:
   return (
@@ -50,7 +80,7 @@ const AdmininElokuvaKortti = ({
               />
             ) : (
               // Jos muokkaus ei päällä, näytetään normaali näkymä:
-              <ElokuvakortinTiedot leffa={leffa} />
+              <ElokuvakortinTiedot leffa={muokattavaLeffa} /> //tähän laitetaan muokattavaLeffa, koska sen sisältämät taulukot on muunnettu merkkijonoiksi
             )}
 
             {/* MUOKKAUS/PERUUTUSNAPPI */}
@@ -58,7 +88,7 @@ const AdmininElokuvaKortti = ({
               onClick={() => {
                 setMuokkausPaalla(!muokkausPaalla);
                 if (muokkausPaalla) {
-                  setMuokattuLeffa(leffa); // Jos muokkaustilasta peruutetaan, nollataan lähtötilanteeseen (alkuperäiset leffan tiedot)
+                  setMuokattuLeffa(teeLeffaYhteensopivaksiNakymanKanssa(leffa)); // Jos muokkaustilasta peruutetaan, nollataan lähtötilanteeseen (alkuperäiset leffan tiedot)
                 }
               }}
               className="btn btn-outline-success"
@@ -77,7 +107,7 @@ const AdmininElokuvaKortti = ({
               <button
                 onClick={() => {
                   // Muokattavaa leffaa on jo muokattu, joten sen tietoja käytetään päivityksessä:
-                  onUpdate(muokattavaLeffa);
+                  onUpdate(palautaMuokattuLeffaOikeaanMuotoon(muokattavaLeffa));
                   setMuokkausPaalla(false);
                 }}
                 className="btn btn-outline-success"

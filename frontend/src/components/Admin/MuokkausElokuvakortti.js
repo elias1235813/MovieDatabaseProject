@@ -38,6 +38,16 @@ const MuokkausElokuvakortti = ({ leffa, muokkausfunktio }) => {
       </p>
       <p className="card-text">
         <label>
+          Kesto (muodossa 00h 00m):
+          <input
+            name="runtime"
+            value={leffa.runtime}
+            onChange={muokkausfunktio}
+          ></input>
+        </label>
+      </p>
+      <p className="card-text">
+        <label>
           Kuvaus:
           <input
             name="description"
@@ -48,10 +58,13 @@ const MuokkausElokuvakortti = ({ leffa, muokkausfunktio }) => {
       </p>
       <p className="card-text">
         <label>
-          Arviot:
+          Arviot (0,0 - 10,0):
           <input
             name="rating"
             type="number"
+            step=".1"
+            min="0"
+            max="10"
             value={leffa.rating}
             onChange={muokkausfunktio}
           ></input>
@@ -59,7 +72,7 @@ const MuokkausElokuvakortti = ({ leffa, muokkausfunktio }) => {
       </p>
       <p className="card-text">
         <label>
-          Genre:
+          Genret (pilkulla erotettuna):
           <input
             name="genre"
             value={leffa.genre}

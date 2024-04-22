@@ -13,7 +13,7 @@ const ElokuvaKortti = ({ _id, image, title, year, description, genre }) => {
             <h5 className="card-title">{title}</h5>
             <p className="card-text">{year}</p>
             <p className="card-text">{description}</p>
-            <p className="card-text">{genre}</p>
+            <p className="card-text">{genre.join(', ')}</p>
             {/* Routerin juttuja */}
             <Link className="btn btn-primary" to={`/leffat/${_id}`}>
               Katso lisää

@@ -5,23 +5,26 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 const Movie = require('./models/Movie');
 const session = require('express-session');
-
+const { validationResult } = require('express-validator');
+const { patchChecker, postChecker } = require('./validointiJaSanitointi');
 const app = express();
 
 // Middleware
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(session({
-  secret: 'SgMvi9ivQdXMiQMTCQUr',
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    sameSite: 'None',
-    secure: true,
-    httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000,
-  }
-}));
+app.use(
+  session({
+    secret: 'SgMvi9ivQdXMiQMTCQUr',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      sameSite: 'None',
+      secure: true,
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    },
+  })
+);
 
 // Frontin syöttäminen backendiin
 app.use(express.static(path.join(__dirname, '../frontend/build')));
@@ -51,13 +54,16 @@ mongoose
 // Käyttäjä ja salasana
 const adminCredentials = {
   username: process.env.ADMIN_USERNAME || 'admin',
-  password: process.env.ADMIN_PASSWORD || 'admin123'
+  password: process.env.ADMIN_PASSWORD || 'admin123',
 };
 
 // Admin login
 app.post('/admin/login', (req, res) => {
   const { username, password } = req.body;
-  if (username === adminCredentials.username && password === adminCredentials.password) {
+  if (
+    username === adminCredentials.username &&
+    password === adminCredentials.password
+  ) {
     res.status(200).json({ message: 'Login successful' });
   } else {
     res.status(401).json({ message: 'Invalid username or password' });
@@ -132,7 +138,13 @@ app.get('/api/movies/title/:title', async (req, res) => {
 });
 
 // API POST
-app.post('/api/movies', async (req, res) => {
+app.post('/api/movies', postChecker, async (req, res) => {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    res.sendStatus(400);
+    return;
+  }
+
   try {
     // ota data requestista
     const {
@@ -190,7 +202,29 @@ app.delete('/api/movies/:id', async (req, res) => {
 });
 
 // API UPDATE (PATCH)
-app.patch('/api/movies/:id', async (req, res) => {
+app.patch('/api/movies/:id', patchChecker, async (req, res) => {
+  // validationResult: express-validatorin funktio, joka lukee mahdolliset validointivirheet req-objektista ja
+  // palauttaa validoinnin tuloksen: jos tulos on tyhjä, kaikki on ok. Virhetilanteissa palauttaa virheet results-objetin errors taulukossa.
+  const result = validationResult(req);
+  console.log(result);
+
+  if (!result.isEmpty()) {
+    // Palautetaan virheestä path, koska siitä nähdään, mikä kenttä on pielessä
+
+    // Koska jostain syystä virheissä on joskus sama kenttä tuplana, lisätään virheellinen tieto invalidFields-taulukkoon vain kerran
+    const invalidFields = [];
+    result.errors.forEach((error) => {
+      if (!invalidFields.includes(error.path)) {
+        invalidFields.push(error.path);
+      }
+    });
+
+    res.status(400).json({
+      invalidFields: invalidFields,
+    });
+    return;
+  }
+
   try {
     // Päivitettävä elokuva valitaan id:n perusteella
     const filter = { _id: req.params.id };
