@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AdminLogin from './AdminLogin';
 import LisaaElokuva from './LisaaElokuva.js';
 import MuokkaaJaPoistaElokuva from './MuokkaaJaPoistaElokuva.js';
-import Logout from './logout.js';
+import Logout from './logout.js'; // Corrected import filename
 
 const AdminNakyma = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -31,6 +31,7 @@ const AdminNakyma = () => {
     <section>
       {isLoggedIn ? (
         <>
+          <Logout onLogout={handleLogout} className="logout-button" />
           <h1>Tervetuloa tietokannan ylläpitoon!</h1>
           <p>
             Täällä voit lisätä tietokantaan uusia elokuvia, päivittää elokuvien
@@ -40,7 +41,6 @@ const AdminNakyma = () => {
           <LisaaElokuva />
           <hr />
           <MuokkaaJaPoistaElokuva />
-          <Logout onLogout={handleLogout} className="logout-button" />
         </>
       ) : (
         <AdminLogin onLogin={handleLogin} />
