@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AdminLogin from './AdminLogin';
 import LisaaElokuva from './LisaaElokuva.js';
 import MuokkaaJaPoistaElokuva from './MuokkaaJaPoistaElokuva.js';
-import Logout from './logout.js'; // Corrected import filename
+import Logout from './logout.js';
 
 const AdminNakyma = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -11,7 +11,7 @@ const AdminNakyma = () => {
     // Check if session token exists in local storage
     const token = localStorage.getItem('sessionToken');
     if (token) {
-      setIsLoggedIn(true); // User is considered logged in
+      setIsLoggedIn(true);
     }
   }, []);
 

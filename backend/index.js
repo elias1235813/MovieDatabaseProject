@@ -19,7 +19,7 @@ app.use(session({
     sameSite: 'None',
     secure: true,
     httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000, // Set to 1 day (in milliseconds)
+    maxAge: 24 * 60 * 60 * 1000,
   }
 }));
 
@@ -231,7 +231,6 @@ app.patch('/api/movies/:id', async (req, res) => {
   }
 });
 
-// Handle other routes by serving the React app
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend', 'build', 'index.html'));
 });
