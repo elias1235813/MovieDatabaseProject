@@ -27,7 +27,11 @@ const LisaaElokuva = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          genre: formData.genre.split(',').map((item) => item.trim()),
+          director: formData.director.split(',').map((item) => item.trim()),
+        }),
       });
       if (response.ok) {
         // Movie added successfully
