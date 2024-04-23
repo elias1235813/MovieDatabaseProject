@@ -9,11 +9,13 @@ import AdminNakyma from './components/Admin/AdminNakyma';
 import ElokuvanOmaNakyma, {
   leffaLoader,
 } from './components/Elokuvasivu/ElokuvanOmaNakyma';
+import Virhesivu from './components/Yleiset/Virhesivu';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    errorElement: <Virhesivu />,
     children: [
       {
         path: '',
