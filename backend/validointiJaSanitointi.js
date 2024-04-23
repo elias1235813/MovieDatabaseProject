@@ -58,35 +58,30 @@ const directorChecker = () => {
 
 // KESTO
 
-  // Muotoillaan regexillä formaatti, jossa tunnit ja minuutit halutaan saada:
+// Muotoillaan regexillä formaatti, jossa tunnit ja minuutit halutaan saada:
 
-  // REGEXin merkinnät (muistin virkistykseksi)
-  // Regex tulee näiden väliin //
-  // ^ = merkkijonon pitää alkaa tästä
-  // (\d+) = yksi tai useampi numero
-  // \s{1} = 1 välilyönti
-  // $ = merkkijono päättyy tähän
-  // i = ei ole väliä kirjoitetaanko isoja vai pieniä kirjaimia
+// REGEXin merkinnät (muistin virkistykseksi)
+// Regex tulee näiden väliin //
+// ^ = merkkijonon pitää alkaa tästä
+// (\d+) = yksi tai useampi numero
+// \s{1} = 1 välilyönti
+// $ = merkkijono päättyy tähän
+// i = ei ole väliä kirjoitetaanko isoja vai pieniä kirjaimia
 
 const runtimeChecker = () => {
-  return (
-    body('runtime')
-      .trim()
-      .escape()
-      .isString()
-      .matches(/^(\d+)h\s{1}(\d+)m$/i)
-      .isLength({ min: 5, max: 8 })
-      .toLowerCase()
-  );
+  return body('runtime')
+    .trim()
+    .escape()
+    .isString()
+    .matches(/^(\d+)h\s{1}(\d+)m$/i)
+    .isLength({ min: 5, max: 8 })
+    .toLowerCase();
 };
 
 // ARVIOT
 
-const ratingChecker = () => {
-  return body('tmdbMovieId')
-  .trim()
-  .escape()
-  .isInt({ min: 1 })
+const tmdbIdChecker = () => {
+  return body('tmdbMovieId').trim().escape().isInt({ min: 1 });
 };
 
 // KUVAUS
@@ -120,7 +115,7 @@ const postChecker = [
   yearChecker().exists(),
   directorChecker().exists(),
   runtimeChecker().exists(),
-  ratingChecker().exists(),
+  tmdbIdChecker().exists(),
   descriptionChecker().exists(),
   genreChecker().exists(),
   imageURLChecker().exists(),
@@ -131,7 +126,7 @@ const patchChecker = [
   yearChecker().optional(),
   directorChecker().optional(),
   runtimeChecker().optional(),
-  ratingChecker().optional(),
+  tmdbIdChecker().optional(),
   descriptionChecker().optional(),
   genreChecker().optional(),
   imageURLChecker().optional(),
