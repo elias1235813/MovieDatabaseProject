@@ -5,11 +5,12 @@ const MuokkausElokuvakortti = ({ leffa, muokkausfunktio }) => {
     <form>
       <p className="card-text">
         <label>
-          Nimi:
+          Nimi: <br />
           {/* Name laitetaan inputiin mukaan, jotta
           muokkaus pystytään kohdistamaan oikeaan kenttään */}
           <input
             name="title"
+            className="form-control"
             value={leffa.title}
             onChange={muokkausfunktio}
           ></input>
@@ -17,9 +18,10 @@ const MuokkausElokuvakortti = ({ leffa, muokkausfunktio }) => {
       </p>
       <p className="card-text">
         <label>
-          Ohjaaja:
+          Ohjaaja: <br />
           <input
             name="director"
+            className="form-control"
             value={leffa.director}
             onChange={muokkausfunktio}
           ></input>
@@ -27,9 +29,10 @@ const MuokkausElokuvakortti = ({ leffa, muokkausfunktio }) => {
       </p>
       <p className="card-text">
         <label>
-          Julkaisuvuosi:
+          Julkaisuvuosi: <br />
           <input
             name="year"
+            className="form-control"
             type="number"
             value={leffa.year}
             onChange={muokkausfunktio}
@@ -38,9 +41,10 @@ const MuokkausElokuvakortti = ({ leffa, muokkausfunktio }) => {
       </p>
       <p className="card-text">
         <label>
-          Kesto (muodossa 00h 00m):
+          Kesto (muodossa 00h 00m): <br />
           <input
             name="runtime"
+            className="form-control"
             value={leffa.runtime}
             onChange={muokkausfunktio}
           ></input>
@@ -48,9 +52,10 @@ const MuokkausElokuvakortti = ({ leffa, muokkausfunktio }) => {
       </p>
       <p className="card-text">
         <label>
-          Kuvaus:
+          Kuvaus: <br />
           <input
             name="description"
+            className="form-control"
             value={leffa.description}
             onChange={muokkausfunktio}
           ></input>
@@ -58,9 +63,10 @@ const MuokkausElokuvakortti = ({ leffa, muokkausfunktio }) => {
       </p>
       <p className="card-text">
         <label>
-          Arviot (tulevat suoraan TMBD:stä):
+          Arviot (tulevat suoraan TMBD:stä): <br />
           <input
             disabled
+            className="form-control"
             name="rating"
             type="number"
             step=".1"
@@ -74,8 +80,10 @@ const MuokkausElokuvakortti = ({ leffa, muokkausfunktio }) => {
       <p className="card-text">
         <label>
           Genret (pilkulla erotettuna):
+          <br />
           <input
             name="genre"
+            className="form-control"
             value={leffa.genre}
             onChange={muokkausfunktio}
           ></input>
@@ -84,8 +92,10 @@ const MuokkausElokuvakortti = ({ leffa, muokkausfunktio }) => {
       <p className="card-text">
         <label>
           Kuvan osoite:
+          <br />
           <input
             name="image"
+            className="form-control"
             value={leffa.image}
             onChange={muokkausfunktio}
           ></input>

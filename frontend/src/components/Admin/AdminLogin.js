@@ -11,9 +11,9 @@ const AdminLogin = ({ onLogin }) => {
       const response = await fetch('/admin/login', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ username, password }),
       });
       if (response.ok) {
         onLogin();
@@ -26,21 +26,38 @@ const AdminLogin = ({ onLogin }) => {
     }
   };
 
-  
   return (
     <div>
       <h2>Admin Login</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Username:</label>
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+          <label>Käyttäjätunnus:</label>
+          <input
+            className="form-control"
+            placeholder="Käyttäjätunnus"
+            aria-label="Käyttäjätunnus"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
         </div>
         <div>
-          <label>Password:</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <label>Salasana:</label>
+          <input
+            className="form-control"
+            placeholder="Salasana"
+            aria-label="Salasana"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
         </div>
-        <button type="submit">Login</button>
+        <button className="btn btn-outline-success" type="submit">
+          Login
+        </button>
       </form>
     </div>
   );

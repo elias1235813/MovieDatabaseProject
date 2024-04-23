@@ -107,6 +107,8 @@ const LisaaElokuva = () => {
         <input
           type="text"
           className="form-control"
+          placeholder="esim. Koodarin painajainen"
+          aria-label="Elokuvan nimi"
           id="title"
           value={formData.title}
           onChange={handleInputChange}
@@ -117,6 +119,8 @@ const LisaaElokuva = () => {
         <input
           type="number"
           className="form-control"
+          placeholder="esim. 2024"
+          aria-label="Julkaisuvuosi"
           id="year"
           value={formData.year}
           onChange={handleInputChange}
@@ -128,6 +132,8 @@ const LisaaElokuva = () => {
         <input
           type="text"
           className="form-control"
+          placeholder="esim. Tiina Sassali, Elias Vuorenmaa, Iida Savimäki"
+          aria-label="ohjaaja"
           id="director"
           value={formData.director}
           onChange={handleInputChange}
@@ -138,6 +144,8 @@ const LisaaElokuva = () => {
         </label>
         <input
           type="text"
+          placeholder="esim. 6h 24m"
+          aria-label="Kesto"
           className="form-control"
           id="runtime"
           value={formData.runtime}
@@ -146,13 +154,17 @@ const LisaaElokuva = () => {
 
         <label htmlFor="tmdbMovieId" className="form-label">
           TMDB Elokuva ID <br />
-          ID on numerosarja, joka löytyy TMDB:stä elokuvan sivun
-          verkko-osoitteesta. <br />
-          Esim. osoitteessa: https://www.themoviedb.org/movie/<b>1202208</b>
-          -muumipeikko-ja-pyrstotahti ID on <b>1202208</b>.
+          <i>
+            ID on numerosarja, joka löytyy TMDB:stä elokuvan sivun
+            verkko-osoitteesta. <br />
+            Esim. osoitteessa: https://www.themoviedb.org/movie/<b>1202208</b>
+            -muumipeikko-ja-pyrstotahti ID on <b>1202208</b>.
+          </i>
         </label>
         <input
           type="text"
+          placeholder="esim. 123987"
+          aria-label="TMDB ID"
           className="form-control"
           id="tmdbMovieId"
           value={tmdbMovieId}
@@ -164,6 +176,8 @@ const LisaaElokuva = () => {
         </label>
         <textarea
           className="form-control"
+          placeholder="Kirjoita elokuvan lyhyt kuvaus tähän. Juonipaljastukset sallittu."
+          aria-label="Kuvaus"
           id="description"
           value={formData.description}
           onChange={handleInputChange}
@@ -175,6 +189,8 @@ const LisaaElokuva = () => {
         <input
           type="text"
           className="form-control"
+          placeholder="esim. Komedia, Kauhu, Fantasia"
+          aria-label="Genret"
           id="genre"
           value={formData.genre}
           onChange={handleInputChange}
@@ -186,6 +202,8 @@ const LisaaElokuva = () => {
         <input
           type="text"
           className="form-control"
+          placeholder="esim. https://kuva.fi/kuva1"
+          aria-label="Kuvan url"
           id="image"
           value={formData.image}
           onChange={handleInputChange}

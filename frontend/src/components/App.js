@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <Navigaatio />
-      <section>
+      <section className="kokonaisnakyma">
         {/* Ideana on, että Navigaatio ja Footer aina samat, section-osioon React Router luo vaihtuvan sisällön polun perusteella */}
         <Outlet />
       </section>
