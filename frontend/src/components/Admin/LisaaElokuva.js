@@ -2,6 +2,13 @@ import React, { useState } from 'react';
 
 const LisaaElokuva = () => {
   // State variables to hold form data
+  const [tmdbMovieId, settmdbMovieId] = useState('');
+
+  // Function to handle TMDB movie link input change
+  const handletmdbMovieIdChange = (e) => {
+    settmdbMovieId(e.target.value);
+  };
+
   const [formData, setFormData] = useState({
     title: '',
     year: '',
@@ -21,6 +28,12 @@ const LisaaElokuva = () => {
   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // TMDB movieID tarkistus
+    if (!tmdbMovieId || isNaN(tmdbMovieId)) {
+      alert('Please input a valid TMDB movie ID. For example, in this link: https://www.themoviedb.org/movie/1202208-muumipeikko-ja-pyrstotahti, the numbers after movie/ are the ID.');
+      return;
+    }
+
     try {
       const response = await fetch('/api/movies', {
         method: 'POST',
@@ -29,6 +42,7 @@ const LisaaElokuva = () => {
         },
         body: JSON.stringify({
           ...formData,
+          tmdbMovieId: tmdbMovieId,
           genre: formData.genre.split(',').map((item) => item.trim()),
           director: formData.director.split(',').map((item) => item.trim()),
         }),
@@ -106,18 +120,15 @@ const LisaaElokuva = () => {
           onChange={handleInputChange}
         />
 
-        <label htmlFor="rating" className="form-label">
-          Arviot (0,0 - 10,0)
+        <label htmlFor="tmdbMovieId" className="form-label">
+          TMDB ElokuvaID
         </label>
         <input
-          type="number"
-          step=".1"
-          min="0"
-          max="10"
+          type="text"
           className="form-control"
-          id="rating"
-          value={formData.rating}
-          onChange={handleInputChange}
+          id="tmdbMovieId"
+          value={tmdbMovieId}
+          onChange={handletmdbMovieIdChange}
         />
 
         <label htmlFor="description" className="form-label">

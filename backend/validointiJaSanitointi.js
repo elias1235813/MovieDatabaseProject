@@ -97,7 +97,10 @@ const runtimeChecker = () => {
 // ARVIOT
 
 const ratingChecker = () => {
-  return body('rating').trim().escape().isFloat({ min: 0, max: 10 });
+  return body('tmdbMovieId')
+  .trim()
+  .escape()
+  .isInt({ min: 1 })
 };
 
 // KUVAUS
@@ -136,6 +139,7 @@ const postChecker = [
   genreChecker().exists(),
   imageURLChecker().exists(),
 ];
+
 const patchChecker = [
   titlechecker().optional(),
   yearChecker().optional(),

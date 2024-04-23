@@ -9,6 +9,7 @@ const session = require('express-session');
 const { validationResult } = require('express-validator');
 const { patchChecker, postChecker } = require('./validointiJaSanitointi');
 const app = express();
+const axios = require('axios');
 
 // Middleware
 app.use(express.json());
@@ -143,6 +144,8 @@ app.get('/api/movies/title/:title', async (req, res) => {
   }
 });
 
+const API_KEY = 'b147c465537bf38f7c3465592806e64a';
+
 // API POST
 app.post('/api/movies', postChecker, async (req, res) => {
   const result = validationResult(req);
@@ -158,11 +161,19 @@ app.post('/api/movies', postChecker, async (req, res) => {
       year,
       director,
       runtime,
-      rating,
+      tmdbMovieId,
       description,
       genre,
       image,
     } = req.body;
+
+    // Hae elokuvan tiedot TMDB:stä (tmdbMovieId on linkki elokuvaan sivulla)
+    const tmdbResponse = await axios.get(`https://api.themoviedb.org/3/movie/${tmdbMovieId}?api_key=${API_KEY}`);
+    const tmdbMovieData = tmdbResponse.data;
+    console.log(tmdbResponse);
+    
+    // Ota arvostelut TMDB:n datasta
+    const tmdbRating = tmdbMovieData.vote_average;
 
     // Lisää uusi elokuva
     const newMovie = new Movie({
@@ -170,7 +181,7 @@ app.post('/api/movies', postChecker, async (req, res) => {
       year,
       director,
       runtime,
-      rating,
+      rating: tmdbRating,
       description,
       genre,
       image,
