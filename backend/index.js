@@ -144,7 +144,7 @@ app.get('/api/movies/title/:title', async (req, res) => {
   }
 });
 
-const API_KEY = 'b147c465537bf38f7c3465592806e64a';
+const API_KEY = '';
 
 // API POST
 app.post('/api/movies', postChecker, async (req, res) => {
