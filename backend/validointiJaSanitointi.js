@@ -3,14 +3,6 @@ const { body } = require('express-validator'); // body  on tässä yhteydessä b
 // CUSTOM-funktiot:
 
 // SANITAATTORIT
-// PILKULLA EROTUS ARRAYKSI (genret)
-const commaSeparatedToArrayAndCapitalize = (value) => {
-  return value
-    .split(',') // splitataan pilkusta
-    .map((item) => item.trim()) // välilyönnit pois alusta ja lopusta
-    .filter((item) => item !== '') // suodatetaan vain sellaiset, jotka on ei tyhjiä merkkijonoja
-    .map((item) => capitalizeString(item));
-};
 
 // STRINGIN ENSIMMÄINEN SANA ALKAMAAN ISOLLA
 const capitalizeString = (value) => {
@@ -36,22 +28,6 @@ const capitalizeWordsInArray = (value) => {
 // VUOSILUKU EI TULEVAISUUDESSA (julkaisuvuosi)
 const notInFuture = (value) => {
   return parseInt(value) <= new Date().getFullYear();
-};
-// TUNTIEN JA MINUUTTIEN TARKISTUS ONKO MUOTOA 1h 30m
-
-const validateRuntime = (value) => {
-  // Muotoillaan regexillä formaatti, jossa tunnit ja minuutit halutaan saada:
-
-  // REGEXin merkinnät (muistin virkistykseksi)
-  // Regex tulee näiden väliin //
-  // ^ = merkkijonon pitää alkaa tästä
-  // (\d+) = yksi tai useampi numero
-  // \s = välilyönti
-  // $ = merkkijono päättyy tähän
-  // i = ei ole väliä kirjoitetaanko isoja vai pieniä kirjaimia
-
-  const regex = /^(\d+)h\s{1}(\d+)m$/i;
-  return value.match(regex) != null;
 };
 
 // ERI KENTTIEN VALIDOINNIT JA SANITOINNIT
@@ -81,13 +57,23 @@ const directorChecker = () => {
 };
 
 // KESTO
+
+  // Muotoillaan regexillä formaatti, jossa tunnit ja minuutit halutaan saada:
+
+  // REGEXin merkinnät (muistin virkistykseksi)
+  // Regex tulee näiden väliin //
+  // ^ = merkkijonon pitää alkaa tästä
+  // (\d+) = yksi tai useampi numero
+  // \s{1} = 1 välilyönti
+  // $ = merkkijono päättyy tähän
+  // i = ei ole väliä kirjoitetaanko isoja vai pieniä kirjaimia
+
 const runtimeChecker = () => {
   return (
     body('runtime')
       .trim()
       .escape()
       .isString()
-      //.custom(validateRuntime)
       .matches(/^(\d+)h\s{1}(\d+)m$/i)
       .isLength({ min: 5, max: 8 })
       .toLowerCase()

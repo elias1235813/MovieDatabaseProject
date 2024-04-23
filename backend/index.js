@@ -29,9 +29,11 @@ app.use(
 );
 
 //Sallitaan localhost:3001 hakea dataa localhost:3000:sta
-app.use(cors({
-  origin: 'http://localhost:3001'
-}));
+app.use(
+  cors({
+    origin: 'http://localhost:3001',
+  })
+);
 
 // Frontin syöttäminen backendiin
 app.use(express.static(path.join(__dirname, '../frontend/build')));
@@ -148,9 +150,24 @@ const API_KEY = '';
 
 // API POST
 app.post('/api/movies', postChecker, async (req, res) => {
+  // validationResult: express-validatorin funktio, joka lukee mahdolliset validointivirheet req-objektista ja
+  // palauttaa validoinnin tuloksen: jos tulos on tyhjä, kaikki on ok. Virhetilanteissa palauttaa virheet results-objetin errors taulukossa.
   const result = validationResult(req);
+
   if (!result.isEmpty()) {
-    res.sendStatus(400);
+    // Palautetaan virheestä path, koska siitä nähdään, mikä kenttä on pielessä
+
+    // Koska jostain syystä virheissä on joskus sama kenttä tuplana, lisätään virheellinen tieto invalidFields-taulukkoon vain kerran
+    const invalidFields = [];
+    result.errors.forEach((error) => {
+      if (!invalidFields.includes(error.path)) {
+        invalidFields.push(error.path);
+      }
+    });
+
+    res.status(400).json({
+      invalidFields: invalidFields,
+    });
     return;
   }
 
@@ -168,10 +185,12 @@ app.post('/api/movies', postChecker, async (req, res) => {
     } = req.body;
 
     // Hae elokuvan tiedot TMDB:stä (tmdbMovieId on linkki elokuvaan sivulla)
-    const tmdbResponse = await axios.get(`https://api.themoviedb.org/3/movie/${tmdbMovieId}?api_key=${API_KEY}`);
+    const tmdbResponse = await axios.get(
+      `https://api.themoviedb.org/3/movie/${tmdbMovieId}?api_key=${API_KEY}`
+    );
     const tmdbMovieData = tmdbResponse.data;
     console.log(tmdbResponse);
-    
+
     // Ota arvostelut TMDB:n datasta
     const tmdbRating = tmdbMovieData.vote_average;
 
@@ -223,7 +242,6 @@ app.patch('/api/movies/:id', patchChecker, async (req, res) => {
   // validationResult: express-validatorin funktio, joka lukee mahdolliset validointivirheet req-objektista ja
   // palauttaa validoinnin tuloksen: jos tulos on tyhjä, kaikki on ok. Virhetilanteissa palauttaa virheet results-objetin errors taulukossa.
   const result = validationResult(req);
-  console.log(result);
 
   if (!result.isEmpty()) {
     // Palautetaan virheestä path, koska siitä nähdään, mikä kenttä on pielessä

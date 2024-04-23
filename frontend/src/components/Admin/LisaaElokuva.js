@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-
+const elokuvanDetailitSuomeksi = {
+  title: 'Nimi',
+  director: 'Ohjaaja',
+  year: 'Julkaisuvuosi',
+  // rating: 'Arviot',
+  tmdbMovieId: 'TMDB ELokuva ID',
+  runtime: 'Kesto',
+  description: 'Kuvaus',
+  image: 'Kuvan URL',
+};
 const LisaaElokuva = () => {
   // State variables to hold form data
   const [tmdbMovieId, settmdbMovieId] = useState('');
@@ -29,10 +38,10 @@ const LisaaElokuva = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // TMDB movieID tarkistus
-    if (!tmdbMovieId || isNaN(tmdbMovieId)) {
-      alert('Please input a valid TMDB movie ID. For example, in this link: https://www.themoviedb.org/movie/1202208-muumipeikko-ja-pyrstotahti, the numbers after movie/ are the ID.');
-      return;
-    }
+    // if (!tmdbMovieId || isNaN(tmdbMovieId)) {
+    //   alert('Please input a valid TMDB movie ID. For example, in this link: https://www.themoviedb.org/movie/1202208-muumipeikko-ja-pyrstotahti, the numbers after movie/ are the ID.');
+    //   return;
+    // }
 
     try {
       const response = await fetch('/api/movies', {
@@ -63,6 +72,21 @@ const LisaaElokuva = () => {
           image: '',
         });
         location.reload();
+      } else if (response.status === 400) {
+        const responseBody = await response.json();
+
+        // elokuvanDetailitSuomeksi
+        const virheellisetKentatSuomeksi = responseBody.invalidFields.map(
+          (invalidField) => {
+            return elokuvanDetailitSuomeksi[invalidField];
+          }
+        );
+
+        alert(
+          'Elokuvan tietojen lisääminen epäonnistui.Tarkista seuraavat kentät: ' +
+            virheellisetKentatSuomeksi.join(', ') +
+            '.'
+        );
       } else {
         console.error('Failed to add movie');
         alert('Elokuvan lisääminen epäonnistui.');
@@ -121,7 +145,11 @@ const LisaaElokuva = () => {
         />
 
         <label htmlFor="tmdbMovieId" className="form-label">
-          TMDB ElokuvaID
+          TMDB Elokuva ID <br />
+          ID on numerosarja, joka löytyy TMDB:stä elokuvan sivun
+          verkko-osoitteesta. <br />
+          Esim. osoitteessa: https://www.themoviedb.org/movie/<b>1202208</b>
+          -muumipeikko-ja-pyrstotahti ID on <b>1202208</b>.
         </label>
         <input
           type="text"
