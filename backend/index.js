@@ -1,3 +1,4 @@
+const cors = require('cors');
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -25,6 +26,11 @@ app.use(
     },
   })
 );
+
+//Sallitaan localhost:3001 hakea dataa localhost:3000:sta
+app.use(cors({
+  origin: 'http://localhost:3001'
+}));
 
 // Frontin syöttäminen backendiin
 app.use(express.static(path.join(__dirname, '../frontend/build')));
@@ -104,7 +110,7 @@ app.get('/api/movies', async (req, res) => {
 
 //API GET ONE BY ID
 
-app.get('/api/movies/:id', async (req, res) => {
+app.get('/api/movies/:id', cors(), async (req, res) => {
   try {
     const movies = await Movie.findById(req.params.id);
     res.json(movies);

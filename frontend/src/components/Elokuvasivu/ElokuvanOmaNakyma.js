@@ -1,47 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 
 // React Routerin loader, joka hakee elokuvan tiedot näkymään
 export async function leffaLoader({ params }) {
-
-  /*   
-  const [elokuva, setMovies] = useState(null);
-
-  useEffect(() => {
-    fetchData(params.leffanId);
-  }, [params.leffanId]); 
-
-  const fetchData = async (id) => {
-    try {
-      const response = await fetch('/api/movies/${id}');
-      const data = await response.json();
-      setMovies(data);
-    } catch (error) {
-      console.error('Elokuvan tietojen hakeminen epäonnistui:', error);
-    }
-  }; */
-
-  return { leffa: { id: params.leffanId,
-                    nimi: 'kyllikki',
-                    vuosi: 1991,
-                    kuva: 'https://img.ilcdn.fi/NqIiKVWRx2aUnnD143iUv8SMgr8=/full-fit-in/920x0/img-s3.ilcdn.fi/9e4131bc225129dc25be6e78bb60f8b357244bb351ac7a74741b629cedf92821.jpg',
-                    kuvaus: 'jeejee',
-                    kesto: '2h 3min',
-                    arvio: 9.9 } };
+  try {
+      const response = await fetch(`http://localhost:3000/api/movies/${params.leffanId}`);
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json(); // Assume JSON response
+  } catch (error) {
+      console.error('Tietojen hakeminen epäonnistui:', error);
+      return null;
+  }
 }
 
 const ElokuvanOmaNakyma = () => {
   // Tätä pitää täydentää järkevämmällä html:llä
-  const { leffa } = useLoaderData();
-  return <section>
-    <h1>{leffa.nimi}</h1>
-    <p>{leffa.vuosi}</p>
-    <img src={leffa.kuva} className="img-fluid" alt={leffa.nimi}/>
-    <p>{leffa.kuvaus}</p>
-    <p>ARVIO:{leffa.arvio}</p>
-    <p>KESTO: {leffa.kesto}</p>
-  </section>;
+  const leffa = useLoaderData();
+  return (
+        <div className="personal-info container mt-5">
+            <div className="card h-100 border-0">
+                <div className="row no-gutters">
+                     <div className="col md-4">
+                     <img src={leffa.image} className="img-fluid" alt={leffa.title}/>
+                    </div>
+                    <div className="col-md-8">
+                        <div className="card-body" class="leffan-tiedot">
+                            <h1 className="card-title">{leffa.title}</h1>
+                            <p className="card-text">{leffa.year}</p>
+                            <p className="card-text">
+                                {leffa.description}
+                            </p>
+                            <p className="card-text">
+                                <strong>OHJAAJA:</strong> {leffa.director.join(', ')}
+                            </p>
+                            <p className="card-text">
+                                <strong>ARVIO:</strong> {leffa.rating}
+                            </p>
+                            <p className="card-text">
+                                <strong>KESTO:</strong> {leffa.runtime}
+                            </p>
+                            <p className="card-text">
+                                <strong>GENRE:</strong> {leffa.genre.join(', ')}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+);
 };
 
 export default ElokuvanOmaNakyma;
