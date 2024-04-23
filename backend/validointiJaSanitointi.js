@@ -18,27 +18,25 @@ const capitalizeString = (value) => {
 };
 
 // STRINGIN KAIKKI SANAT ALKAMAAN ISOLLA ALKUKIRJAIMELLA
-const capitalizeWords = (value) => {
-  // Hajotetaan string sanoiksi välilyönnin perusteella
-  const words = value.split(' ');
-  // Laitetaan joka sana alkamaan isolla alkukirjaimella
-  const capitalizedWords = words.map((word) => {
-    return capitalizeString(word);
+const capitalizeWordsInArray = (value) => {
+  return value.map((item) => {
+    // Hajotetaan string sanoiksi välilyönnin perusteella
+    const words = item.split(' ');
+    // Laitetaan joka sana alkamaan isolla alkukirjaimella
+    const capitalizedWords = words.map((word) => {
+      return capitalizeString(word);
+    });
+    // Yhdistetään takaisin stringiksi
+    const result = capitalizedWords.join(' ');
+    return result;
   });
-  // Yhdistetään takaisin stringiksi
-  const result = capitalizedWords.join(' ');
-
-  return result;
 };
 
 // VALIDAATTORIT
 // VUOSILUKU EI TULEVAISUUDESSA (julkaisuvuosi)
 const notInFuture = (value) => {
-  if (value > new Date().getFullYear()) {
-    throw new Error('Elokuvan vuosi voi olla korkeintaan kuluva vuosi.');
-  }
+  return parseInt(value) <= new Date().getFullYear();
 };
-
 // TUNTIEN JA MINUUTTIEN TARKISTUS ONKO MUOTOA 1h 30m
 
 const validateRuntime = (value) => {
@@ -52,66 +50,103 @@ const validateRuntime = (value) => {
   // $ = merkkijono päättyy tähän
   // i = ei ole väliä kirjoitetaanko isoja vai pieniä kirjaimia
 
-  const regex = /^(\d+)h\s(\d+)m$/i;
-  if (!value.match(regex)) {
-    throw new Error(
-      'Invalid format. Please use the format "Xh Ym" (e.g., "1h 30m").'
-    );
-  }
+  const regex = /^(\d+)h\s{1}(\d+)m$/i;
+  return value.match(regex) != null;
 };
 
 // ERI KENTTIEN VALIDOINNIT JA SANITOINNIT
 
 // TITLE
-const titlechecker = body('title')
-  .trim()
-  .escape()
-  .isString()
-  .customSanitizer(capitalizeString)
-  .isLength({ min: 1, max: 100 });
-
+const titlechecker = () => {
+  return body('title')
+    .trim()
+    .escape()
+    .isString()
+    .customSanitizer(capitalizeString)
+    .isLength({ min: 1, max: 100 });
+};
 // JULKAISUVUOSI
-const yearChecker = body('year')
-  .trim()
-  .escape()
-  .isInt({ min: 1800 })
-  .custom(notInFuture);
+const yearChecker = () => {
+  return body('year').trim().escape().isInt({ min: 1800 }).custom(notInFuture);
+};
 
 // OHJAAJA
-const directorChecker = body('director')
-  .trim()
-  .escape()
-  .isString()
-  .customSanitizer(capitalizeWords)
-  .isLength({ min: 1, max: 100 });
+const directorChecker = () => {
+  return body('director')
+    .trim()
+    .escape()
+    .isArray()
+    .customSanitizer(capitalizeWordsInArray)
+    .isLength({ min: 1, max: 100 });
+};
 
 // KESTO
-const runtimeChecker = body('runtime')
-  .trim()
-  .escape()
-  .isString()
-  .custom(validateRuntime)
-  .isLength({ min: 5, max: 8 });
+const runtimeChecker = () => {
+  return (
+    body('runtime')
+      .trim()
+      .escape()
+      .isString()
+      //.custom(validateRuntime)
+      .matches(/^(\d+)h\s{1}(\d+)m$/i)
+      .isLength({ min: 5, max: 8 })
+      .toLowerCase()
+  );
+};
 
 // ARVIOT
 
-const ratingChecker = body('rating')
-  .trim()
-  .escape()
-  .isFloat({ min: 0, max: 10 });
+const ratingChecker = () => {
+  return body('rating').trim().escape().isFloat({ min: 0, max: 10 });
+};
 
 // KUVAUS
-const descriptionChecker = body('description')
-  .trim()
-  .escape()
-  .isString()
-  .isLength({ min: 1, max: 3000 });
+const descriptionChecker = () => {
+  return body('description')
+    .trim()
+    .escape()
+    .isString()
+    .isLength({ min: 1, max: 3000 });
+};
 
 // GENRE
-const genreChecker = body('genre')
-  .trim()
-  .escape()
-  .customSanitizer(commaSeparatedToArrayAndCapitalize);
+const genreChecker = () => {
+  return body('genre')
+    .trim()
+    .escape()
+    .isArray()
+    .customSanitizer(capitalizeWordsInArray);
+};
 
 // KUVA URL
-const imageURLChecker = body('image').trim().escape().isURL();
+const imageURLChecker = () => {
+  // escape poistettu
+  return body('image').trim().isURL();
+};
+
+// YHDISTETÄÄN VALIDAATTORIT POST JA PATCH -KUTSUJA VARTEN
+
+const postChecker = [
+  titlechecker().exists(),
+  yearChecker().exists(),
+  directorChecker().exists(),
+  runtimeChecker().exists(),
+  ratingChecker().exists(),
+  descriptionChecker().exists(),
+  genreChecker().exists(),
+  imageURLChecker().exists(),
+];
+const patchChecker = [
+  titlechecker().optional(),
+  yearChecker().optional(),
+  directorChecker().optional(),
+  runtimeChecker().optional(),
+  ratingChecker().optional(),
+  descriptionChecker().optional(),
+  genreChecker().optional(),
+  imageURLChecker().optional(),
+];
+module.exports = {
+  postChecker: postChecker,
+  patchChecker: patchChecker,
+};

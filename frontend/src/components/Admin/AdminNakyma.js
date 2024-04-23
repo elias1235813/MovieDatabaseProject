@@ -11,7 +11,7 @@ const AdminNakyma = () => {
     // Check if session token exists in local storage
     const token = localStorage.getItem('sessionToken');
     if (token) {
-      setIsLoggedIn(true); // User is considered logged in
+      setIsLoggedIn(true);
     }
   }, []);
 
@@ -31,6 +31,7 @@ const AdminNakyma = () => {
     <section>
       {isLoggedIn ? (
         <>
+          <Logout onLogout={handleLogout} className="logout-button" />
           <h1>Tervetuloa tietokannan ylläpitoon!</h1>
           <p>
             Täällä voit lisätä tietokantaan uusia elokuvia, päivittää elokuvien
@@ -40,7 +41,6 @@ const AdminNakyma = () => {
           <LisaaElokuva />
           <hr />
           <MuokkaaJaPoistaElokuva />
-          <Logout onLogout={handleLogout} className="logout-button" />
         </>
       ) : (
         <AdminLogin onLogin={handleLogin} />

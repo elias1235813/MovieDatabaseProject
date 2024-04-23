@@ -41,6 +41,7 @@ function ElokuvaLista({ searchQuery }) {
           title={leffa.title}
           year={leffa.year}
           description={leffa.description}
+          genre={leffa.genre}
         />
         ))
       ) : (
