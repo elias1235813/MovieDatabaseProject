@@ -58,8 +58,9 @@ const MuokkausElokuvakortti = ({ leffa, muokkausfunktio }) => {
       </p>
       <p className="card-text">
         <label>
-          Arviot (0,0 - 10,0):
+          Arviot (tulevat suoraan TMBD:stä):
           <input
+            disabled
             name="rating"
             type="number"
             step=".1"
