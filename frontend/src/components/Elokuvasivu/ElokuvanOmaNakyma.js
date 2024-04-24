@@ -20,35 +20,37 @@ const ElokuvanOmaNakyma = () => {
   // Tätä pitää täydentää järkevämmällä html:llä
   const leffa = useLoaderData();
   return (
-        <div className="personal-info container mt-5">
-            <div className="card h-100 border-0">
+    <div className= "moviearea">
+        <div className="movie container mt-5">
+            
                 <div className="row no-gutters">
                      <div className="col md-4">
-                     <img src={leffa.image} className="img-fluid" alt={leffa.title}/>
+                     <img src={leffa.image} className="img-fluid"  alt={leffa.title}/>
                     </div>
                     <div className="col-md-8">
-                        <div className="card-body" class="leffan-tiedot">
-                            <h1 className="card-title">{leffa.title}</h1>
-                            <p className="card-text">{leffa.year}</p>
-                            <p className="card-text">
+                        <div className="card-body">
+                            <h1>{leffa.title}</h1>
+                            <p>{leffa.year}</p>
+                            <p>
                                 {leffa.description}
                             </p>
-                            <p className="card-text">
+                            <p>
                                 <strong>OHJAAJA:</strong> {leffa.director.join(', ')}
                             </p>
-                            <p className="card-text">
+                            <p>
                                 <strong>ARVIO:</strong> {leffa.rating}
                             </p>
-                            <p className="card-text">
+                            <p>
                                 <strong>KESTO:</strong> {leffa.runtime}
                             </p>
-                            <p className="card-text">
+                            <p>
                                 <strong>GENRE:</strong> {leffa.genre.join(', ')}
                             </p>
                         </div>
                     </div>
                 </div>
-            </div>
+            
+        </div>
         </div>
 );
 };
