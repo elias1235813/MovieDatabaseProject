@@ -1,10 +1,10 @@
 import React from 'react';
 
 const MuokkausElokuvakortti = ({ leffa, muokkausfunktio }) => {
-  console.log("tmdbMovieId:", leffa.tmdbMovieId);
+  console.log('tmdbMovieId:', leffa.tmdbMovieId);
 
   // Log when the component renders
-  console.log("MuokkausElokuvakortti rendered");
+  console.log('MuokkausElokuvakortti rendered');
   return (
     <form>
       <p className="card-text">
@@ -67,7 +67,7 @@ const MuokkausElokuvakortti = ({ leffa, muokkausfunktio }) => {
       </p>
       <p className="card-text">
         <label>
-          Arviot (TMDBId tähän. Ei näytä käytössä olevaa ID:tä): <br />
+          TMDB ID tähän (tarvitaan arvioiden päivittämiseen).: <br />
           <input
             name="tmdbMovieId"
             className="form-control"

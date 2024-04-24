@@ -78,7 +78,7 @@ const runtimeChecker = () => {
     .toLowerCase();
 };
 
-// ARVIOT
+// TMDB ID
 
 const tmdbIdChecker = () => {
   return body('tmdbMovieId').trim().escape().isInt({ min: 1 });
