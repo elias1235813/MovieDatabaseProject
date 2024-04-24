@@ -79,7 +79,7 @@ function AdmininElokuvaLista() {
         method: 'DELETE',
       });
       if (response.ok) {
-        // If delete is successful, remove the movie from the list
+        // Jos poisto onnistuu, poista elokuva listalta
         setMovies(leffat.filter((movie) => movie._id !== movieId));
         console.log('Movie deleted successfully');
         alert('Elokuvan poistaminen onnistui.');
@@ -100,7 +100,7 @@ function AdmininElokuvaLista() {
         <AdmininElokuvaKortti
           key={leffa._id}
           leffa={leffa}
-          onDelete={() => poistaElokuva(leffa._id)} // Pass handleDelete function to child component
+          onDelete={() => poistaElokuva(leffa._id)}
           onUpdate={(paivitettyleffa) => muokkaaLeffanTietoja(paivitettyleffa)}
         />
       ))}

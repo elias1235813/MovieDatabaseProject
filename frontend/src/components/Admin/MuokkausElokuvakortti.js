@@ -65,14 +65,10 @@ const MuokkausElokuvakortti = ({ leffa, muokkausfunktio }) => {
         <label>
           Arviot (tulevat suoraan TMBD:stä): <br />
           <input
-            disabled
             className="form-control"
-            name="rating"
+            name="tmdbMovieId"
             type="number"
-            step=".1"
-            min="0"
-            max="10"
-            value={leffa.rating}
+            value={leffa.tmdbMovieId}
             onChange={muokkausfunktio}
           ></input>
         </label>
