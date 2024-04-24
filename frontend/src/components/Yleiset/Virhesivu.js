@@ -5,13 +5,19 @@ export default function Virhesivu() {
   console.error(error);
 
   return (
+    <body class="d-flex justify-content-center 
+                 align-items-center">
+    <div class="col-md-12 text-center">
     <div id="error-page">
       <h1>Hups!</h1>
+      <img src="https://c.tenor.com/kVrGzZGZnUUAAAAC/tenor.gif" height= "300px" alt="John Travolta hämmästyneenä" />
       <p>Täällä ei ole mitään!</p>
-      <a href="./">Palaa etusivulle!</a>
+      <a href="./">Palaa etusivulle!<br></br></a>
       <p>
-        <i>{error.statusText || error.message}</i>
+        Virheviesti: <i>{error.statusText || error.message}</i>
       </p>
     </div>
+    </div>
+    </body>
   );
 }
