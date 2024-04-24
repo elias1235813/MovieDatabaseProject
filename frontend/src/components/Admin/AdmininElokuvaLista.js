@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import AdmininElokuvaKortti from './AdmininElokuvaKortti';
 
+//Nämä liittyy alertiin, joka tulee, jos tietoja on yritetty syöttää väärin
 const elokuvanDetailitSuomeksi = {
   title: 'Nimi',
   director: 'Ohjaaja',
   year: 'Julkaisuvuosi',
-  rating: 'Arviot',
+  tmdbMovieId: 'TMDB ID',
   runtime: 'Kesto',
   description: 'Kuvaus',
   image: 'Kuvan URL',

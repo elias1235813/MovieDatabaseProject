@@ -221,6 +221,7 @@ app.post('/api/movies', postChecker, async (req, res) => {
       director,
       runtime,
       rating: tmdbRating,
+      tmdbMovieId,
       description,
       genre,
       image,
@@ -230,27 +231,6 @@ app.post('/api/movies', postChecker, async (req, res) => {
     const savedMovie = await newMovie.save();
 
     res.status(201).json(savedMovie);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
-// API DELETE
-app.delete('/api/movies/:id', async (req, res) => {
-  try {
-    // Ota elokuvan id requestista
-    const movieID = req.params.id;
-
-    // Löydä elokuva id:n perusteella
-    const deletedMovie = await Movie.findByIdAndDelete(movieID);
-
-    // Jos elokuvaa ei löydy palauta 404 Not Found
-    if (!deletedMovie) {
-      return res.status(404).json({ message: 'Elokuvaa ei löytynyt' });
-    }
-
-    res.json(deletedMovie);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'Server error' });
@@ -319,7 +299,7 @@ app.patch('/api/movies/:id', patchChecker, async (req, res) => {
       upsert: false,
     });
 
-     // Status 200, jos kaikki ok
+    // Status 200, jos kaikki ok
     res.status(200).json(updatedMovie);
   } catch (error) {
     console.log(error);
@@ -327,6 +307,26 @@ app.patch('/api/movies/:id', patchChecker, async (req, res) => {
   }
 });
 
+// API DELETE
+app.delete('/api/movies/:id', async (req, res) => {
+  try {
+    // Ota elokuvan id requestista
+    const movieID = req.params.id;
+
+    // Löydä elokuva id:n perusteella
+    const deletedMovie = await Movie.findByIdAndDelete(movieID);
+
+    // Jos elokuvaa ei löydy palauta 404 Not Found
+    if (!deletedMovie) {
+      return res.status(404).json({ message: 'Elokuvaa ei löytynyt' });
+    }
+
+    res.json(deletedMovie);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend', 'build', 'index.html'));
