@@ -13,16 +13,17 @@ const HakuJaSuodatus = ({ onSearch }) => {
       <h2>Haku</h2>
       <p> Etsi elokuvia kategorian mukaan</p>
       <form onSubmit={handleSearch}>
-        <input
+        <input size="50"
           type="text"
           placeholder="Kirjoita kategoria..."
           name="etsi"
           value={genre}
           onChange={(e) => setGenre(e.target.value)}
         />
-        <button type="submit" className="btn btn-outline-success">
+        <button type="submit" className="btn btn-primary">
           Etsi
         </button>
+
       </form>
     </section>
   );

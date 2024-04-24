@@ -30,7 +30,6 @@ function ElokuvaLista({ searchQuery }) {
 
   return (
     <section className="movie-list">
-      <h2>Elokuvat</h2>
       
       {lataa ? (
         <p>Ladataan...</p>

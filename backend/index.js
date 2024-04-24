@@ -139,7 +139,7 @@ app.get('/api/movies/title/:title', async (req, res) => {
   }
 });
 
-const API_KEY = '';
+const API_KEY = process.env.APIKEY;
 
 // Elokuvien user scoren päivitys
 const updateRatings = async () => {

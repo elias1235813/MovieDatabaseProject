@@ -91,6 +91,15 @@ margin-left: auto;
  border-width: 1px;
 }
 
+.muuttuva-otsikko {
+    display: flex;
+    align-items: center;
+}
+
+.muuttuva-otsikko h2 {
+    margin: 0;
+    margin-right: 10px; /* Väli painikkeeseen */
+}
 
 
 
