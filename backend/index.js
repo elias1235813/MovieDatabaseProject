@@ -19,12 +19,6 @@ app.use(
     secret: 'SgMvi9ivQdXMiQMTCQUr',
     resave: false,
     saveUninitialized: true,
-    cookie: {
-      sameSite: 'None',
-      secure: true,
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000,
-    },
   })
 );
 
@@ -79,10 +73,9 @@ app.post('/admin/login', (req, res) => {
   }
 });
 
-// Example protected route
+// Näytä data adminissa jos käyttäjä on kirjautunut sisään
 app.get('/admin/data', (req, res) => {
   if (req.session.isLoggedIn) {
-    // Return data if user is logged in
     res.json({ data: 'Protected data' });
   } else {
     res.status(401).json({ message: 'Unauthorized' });
@@ -96,7 +89,7 @@ app.post('/admin/logout', (req, res) => {
       console.error('Error logging out:', err);
       res.status(500).json({ message: 'Logout failed' });
     } else {
-      res.clearCookie('connect.sid'); // Clear the session cookie
+      res.clearCookie('connect.sid');
       res.status(200).json({ message: 'Logout successful' });
     }
   });
@@ -148,6 +141,33 @@ app.get('/api/movies/title/:title', async (req, res) => {
 
 const API_KEY = '';
 
+// Elokuvien user scoren päivitys
+const updateRatings = async () => {
+  try {
+    const movies = await Movie.find();
+
+    for (const movie of movies) {
+      const tmdbResponse = await axios.get(
+        `https://api.themoviedb.org/3/movie/${movie.tmdbMovieId}?api_key=${API_KEY}`
+      );
+      const tmdbMovieData = tmdbResponse.data;
+      const tmdbRating = tmdbMovieData.vote_average;
+
+      // Vertaile arvosteluja ja päivitä jos tarvii
+      if (tmdbRating !== movie.rating) {
+        movie.rating = tmdbRating;
+        await movie.save();
+      }
+    }
+  } catch (error) {
+    console.error('Error updating ratings:', error);
+  }
+};
+
+// Päivitä use score joka päivä
+const updateInterval = 24 * 60 * 60 * 1000; // 24h
+setInterval(updateRatings, updateInterval);
+
 // API POST
 app.post('/api/movies', postChecker, async (req, res) => {
   // validationResult: express-validatorin funktio, joka lukee mahdolliset validointivirheet req-objektista ja
@@ -184,7 +204,7 @@ app.post('/api/movies', postChecker, async (req, res) => {
       image,
     } = req.body;
 
-    // Hae elokuvan tiedot TMDB:stä (tmdbMovieId on linkki elokuvaan sivulla)
+    // Hae elokuvan tiedot TMDB:stä (tmdbMovieId on elokuvan ID eli numerot elokuvan TMDB linkissä movie/ jälkeen)
     const tmdbResponse = await axios.get(
       `https://api.themoviedb.org/3/movie/${tmdbMovieId}?api_key=${API_KEY}`
     );
@@ -237,7 +257,7 @@ app.delete('/api/movies/:id', async (req, res) => {
   }
 });
 
-// API UPDATE (PATCH)
+//API UPDATE (PATCH)
 app.patch('/api/movies/:id', patchChecker, async (req, res) => {
   // validationResult: express-validatorin funktio, joka lukee mahdolliset validointivirheet req-objektista ja
   // palauttaa validoinnin tuloksen: jos tulos on tyhjä, kaikki on ok. Virhetilanteissa palauttaa virheet results-objetin errors taulukossa.
@@ -263,7 +283,6 @@ app.patch('/api/movies/:id', patchChecker, async (req, res) => {
   try {
     // Päivitettävä elokuva valitaan id:n perusteella
     const filter = { _id: req.params.id };
-
     // Luetaan pyynnöstä elokuvan päivitettävät tiedot update-objektiin
     const update = {};
 
@@ -272,10 +291,10 @@ app.patch('/api/movies/:id', patchChecker, async (req, res) => {
       'year',
       'director',
       'runtime',
-      'rating',
       'description',
       'genre',
       'image',
+      'tmdbMovieId',
     ];
 
     movieDetails.forEach((movieDetail) => {
@@ -285,20 +304,29 @@ app.patch('/api/movies/:id', patchChecker, async (req, res) => {
     });
 
     // Päivitetään tiedot
+    if (req.body.tmdbMovieId != null) {
+      const tmdbResponse = await axios.get(
+        `https://api.themoviedb.org/3/movie/${req.body.tmdbMovieId}?api_key=${API_KEY}`
+      );
+      const tmdbMovieData = tmdbResponse.data;
+      const tmdbRating = tmdbMovieData.vote_average;
+
+      update['rating'] = tmdbRating;
+    }
 
     const updatedMovie = await Movie.findOneAndUpdate(filter, update, {
       new: true,
       upsert: false,
     });
 
-    // Status 200, jos kaikki ok
-
+     // Status 200, jos kaikki ok
     res.status(200).json(updatedMovie);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'Server error' });
   }
 });
+
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend', 'build', 'index.html'));

@@ -31,7 +31,7 @@ const AdminNakyma = () => {
     <section>
       {isLoggedIn ? (
         <>
-          <Logout onLogout={handleLogout} className="logout-button" />
+          <Logout onLogout={handleLogout} className="btn btn-outline-success" />
           <h1>Tervetuloa tietokannan ylläpitoon!</h1>
           <p>
             Täällä voit lisätä tietokantaan uusia elokuvia, päivittää elokuvien

@@ -6,8 +6,8 @@ const Logout = ({ onLogout }) => {
       const response = await fetch('/admin/logout', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       });
       if (response.ok) {
         onLogout();
@@ -20,7 +20,11 @@ const Logout = ({ onLogout }) => {
   };
 
   return (
-    <button onClick={handleLogout}>Logout</button>
+    <div className="logout-button-area">
+      <button className="btn btn-danger" onClick={handleLogout}>
+        Logout
+      </button>
+    </div>
   );
 };
 
