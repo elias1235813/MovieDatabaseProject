@@ -10,7 +10,8 @@ const HakuJaSuodatus = ({ onSearch }) => {
 
   return (
     <section className="search-and-filter-area">
-      <p> <strong>Etsi elokuvia kategorian mukaan</strong></p>
+      <h2>Haku</h2>
+      <p> Etsi elokuvia kategorian mukaan</p>
       <form onSubmit={handleSearch}>
         <input
           type="text"
