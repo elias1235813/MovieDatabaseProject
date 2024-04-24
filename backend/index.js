@@ -141,6 +141,33 @@ app.get('/api/movies/title/:title', async (req, res) => {
 
 const API_KEY = '';
 
+// Elokuvien user scoren päivitys
+const updateRatings = async () => {
+  try {
+    const movies = await Movie.find();
+
+    for (const movie of movies) {
+      const tmdbResponse = await axios.get(
+        `https://api.themoviedb.org/3/movie/${movie.tmdbMovieId}?api_key=${API_KEY}`
+      );
+      const tmdbMovieData = tmdbResponse.data;
+      const tmdbRating = tmdbMovieData.vote_average;
+
+      // Vertaile arvosteluja ja päivitä jos tarvii
+      if (tmdbRating !== movie.rating) {
+        movie.rating = tmdbRating;
+        await movie.save();
+      }
+    }
+  } catch (error) {
+    console.error('Error updating ratings:', error);
+  }
+};
+
+// Päivitä use score joka päivä
+const updateInterval = 24 * 60 * 60 * 1000; // 24h
+setInterval(updateRatings, updateInterval);
+
 // API POST
 app.post('/api/movies', postChecker, async (req, res) => {
   // validationResult: express-validatorin funktio, joka lukee mahdolliset validointivirheet req-objektista ja
