@@ -17,13 +17,13 @@ function ElokuvaLista({ searchQuery }) {
       }
       const response = await fetch(url);
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('Ongelma verkon vastauksessa');
       }
       const data = await response.json();
       setSuodatetutElokuvat(data);
       setLataa(false);
     } catch (error) {
-      console.error('Fetching movies failed:', error);
+      console.error('Elokuvien haku epäonnistui:', error);
       setLataa(false);
     }
   };

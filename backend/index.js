@@ -50,7 +50,7 @@ mongoose
   .then((result) => {
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => console.log('Listening on ' + PORT));
-    console.log('Connected to DB');
+    console.log('Yhdistetty tietokantaan');
   })
   .catch((err) => {
     console.log(err);
@@ -68,9 +68,9 @@ app.post('/admin/login', (req, res) => {
     username === adminCredentials.username &&
     password === adminCredentials.password
   ) {
-    res.status(200).json({ message: 'Login successful' });
+    res.status(200).json({ message: 'Kirjautuminen onnistui' });
   } else {
-    res.status(401).json({ message: 'Invalid username or password' });
+    res.status(401).json({ message: 'Käyttäjätunnus tai salasana virheellinenunauthori' });
   }
 });
 
@@ -79,7 +79,7 @@ app.get('/admin/data', (req, res) => {
   if (req.session.isLoggedIn) {
     res.json({ data: 'Protected data' });
   } else {
-    res.status(401).json({ message: 'Unauthorized' });
+    res.status(401).json({ message: 'Ei oikeuksia' });
   }
 });
 
@@ -87,11 +87,11 @@ app.get('/admin/data', (req, res) => {
 app.post('/admin/logout', (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      console.error('Error logging out:', err);
-      res.status(500).json({ message: 'Logout failed' });
+      console.error('Virhe uloskirjautumisessa:', err);
+      res.status(500).json({ message: 'Uloskirjautuminen epäonnistui' });
     } else {
       res.clearCookie('connect.sid');
-      res.status(200).json({ message: 'Logout successful' });
+      res.status(200).json({ message: 'Uloskirjautuminen onnistui' });
     }
   });
 });
@@ -99,9 +99,10 @@ app.post('/admin/logout', (req, res) => {
 app.get('/api/movies', async (req, res) => {
   try {
     const movies = await Movie.find();
-    res.json(movies);
-  } catch (error) {
-    console.log(error);
+    res.status(200).json(movies);
+  }  catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Sisäinen palvelinvirhe" });
   }
 });
 
@@ -109,24 +110,37 @@ app.get('/api/movies', async (req, res) => {
 
 app.get('/api/movies/:id', cors(), async (req, res) => {
   try {
-    const movies = await Movie.findById(req.params.id);
-    res.json(movies);
+    const movie = await Movie.findById(req.params.id);
+    if (!movie) {
+      return res.status(404).json({ message: "Elokuvaa ei löytynyt" });
+    }
+    res.status(200).json(movie);
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    if (error.name === "CastError") {
+      return res.status(400).json({ message: "Väärä ID" });
+    }
+    res.status(500).json({ message: "Sisäinen palvelinvirhe" });
   }
 });
+
 
 // API GET BY GENRE
 
 app.get('/api/movies/genre/:genre', async (req, res) => {
   try {
     const genre = req.params.genre;
-    const movies = await Movie.find({ genre: genre })
-    res.json(movies);
+    const movies = await Movie.find({ genre: genre });
+    if (!movies.length) {
+      return res.status(404).json({ message: "Ei tuloksia" });
+    }
+    res.status(200).json(movies);
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    res.status(500).json({ message: "Sisäinen palvelinvirhe" });
   }
 });
+
 
 
 
@@ -136,11 +150,16 @@ app.get('/api/movies/title/:title', async (req, res) => {
   try {
     const title = req.params.title;
     const movies = await Movie.find({ title: title });
-    res.json(movies);
+    if (!movies.length) {
+      return res.status(404).json({ message: "Ei tuloksia" });
+    }
+    res.status(200).json(movies);
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    res.status(500).json({ message: "Sisäinen palvelinvirhe" });
   }
 });
+
 
 const API_KEY = process.env.APIKEY;
 
@@ -163,7 +182,7 @@ const updateRatings = async () => {
       }
     }
   } catch (error) {
-    console.error('Error updating ratings:', error);
+    console.error('Arvosteluja päivittäessä ilmeni virhe:', error);
   }
 };
 
@@ -236,7 +255,7 @@ app.post('/api/movies', postChecker, async (req, res) => {
     res.status(201).json(savedMovie);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Sisäinen palvelinvirhe' });
   }
 });
 
@@ -306,7 +325,7 @@ app.patch('/api/movies/:id', patchChecker, async (req, res) => {
     res.status(200).json(updatedMovie);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Sisäinen palvelinvirhe' });
   }
 });
 
@@ -327,7 +346,7 @@ app.delete('/api/movies/:id', async (req, res) => {
     res.json(deletedMovie);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Sisäinen palvelinvirhe' });
   }
 });
 
