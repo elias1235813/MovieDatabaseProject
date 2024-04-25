@@ -5,6 +5,7 @@ const MuokkausElokuvakortti = ({ leffa, muokkausfunktio }) => {
 
   // Log when the component renders
   console.log('MuokkausElokuvakortti rendered');
+
   return (
     <form>
       <p className="card-text">

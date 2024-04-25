@@ -44,7 +44,6 @@ const dbURI =
   '?retryWrites=true&w=majority&appName=Cluster0';
 console.log(dbURI);
 
-
 mongoose
   .connect(dbURI)
   .then((result) => {
@@ -70,7 +69,7 @@ app.post('/admin/login', (req, res) => {
   ) {
     res.status(200).json({ message: 'Kirjautuminen onnistui' });
   } else {
-    res.status(401).json({ message: 'Käyttäjätunnus tai salasana virheellinenunauthori' });
+    res.status(401).json({ message: 'Käyttäjätunnus tai salasana virheellinen' });
   }
 });
 
@@ -133,15 +132,13 @@ app.get('/api/movies/genre/:genre', async (req, res) => {
     const movies = await Movie.find({ genre: genre });
     if (!movies.length) {
       return res.status(404).json({ message: "Ei tuloksia" });
-    }
+    };
     res.status(200).json(movies);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Sisäinen palvelinvirhe" });
   }
 });
-
-
 
 
 // API GET BY TITLE
@@ -198,7 +195,6 @@ app.post('/api/movies', postChecker, async (req, res) => {
 
   if (!result.isEmpty()) {
     // Palautetaan virheestä path, koska siitä nähdään, mikä kenttä on pielessä
-
     // Koska jostain syystä virheissä on joskus sama kenttä tuplana, lisätään virheellinen tieto invalidFields-taulukkoon vain kerran
     const invalidFields = [];
     result.errors.forEach((error) => {
@@ -267,7 +263,6 @@ app.patch('/api/movies/:id', patchChecker, async (req, res) => {
 
   if (!result.isEmpty()) {
     // Palautetaan virheestä path, koska siitä nähdään, mikä kenttä on pielessä
-
     // Koska jostain syystä virheissä on joskus sama kenttä tuplana, lisätään virheellinen tieto invalidFields-taulukkoon vain kerran
     const invalidFields = [];
     result.errors.forEach((error) => {
@@ -283,9 +278,8 @@ app.patch('/api/movies/:id', patchChecker, async (req, res) => {
   }
 
   try {
-    // Päivitettävä elokuva valitaan id:n perusteella
+    // Päivitettävä elokuva valitaan id:n perusteella ja luetaan pyynnöstä elokuvan päivitettävät tiedot update-objektiin
     const filter = { _id: req.params.id };
-    // Luetaan pyynnöstä elokuvan päivitettävät tiedot update-objektiin
     const update = {};
 
     const movieDetails = [
@@ -325,6 +319,7 @@ app.patch('/api/movies/:id', patchChecker, async (req, res) => {
     res.status(200).json(updatedMovie);
   } catch (error) {
     console.log(error);
+    //Status 500, jos jotain menee pieleen
     res.status(500).json({ message: 'Sisäinen palvelinvirhe' });
   }
 });

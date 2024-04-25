@@ -15,48 +15,49 @@ function teeLeffaYhteensopivaksiNakymanKanssa(leffa) {
   };
 }
 // STRING --> ARRAY:
-// Pilkotaan ohjaaja- ja genre-merkkijonot pilkusta taulukoksi, jotta ne menevät oikeassa muodossa tietokantaan
+// Pilkotaan ohjaaja- ja genre-merkkijonot pilkusta taulukoksi, jotta ne menevät oikeassa muodossa (taulukkona) tietokantaan
 // Muut leffan tiedot pidetään ennallaan
 // Turhat välilyönnit trimmataan pois
-function palautaMuokattuLeffaOikeaanMuotoon(muokattuLeffa) {
+function palautaPaivitettyLeffaOikeaanMuotoon(paivitettyLeffa) {
   return {
-    ...muokattuLeffa,
-    director: muokattuLeffa.director.split(',').map((item) => item.trim()),
-    genre: muokattuLeffa.genre.split(',').map((item) => item.trim()),
+    ...paivitettyLeffa,
+    director: paivitettyLeffa.director.split(',').map((item) => item.trim()),
+    genre: paivitettyLeffa.genre.split(',').map((item) => item.trim()),
   };
 }
 
 // VARSINAINEN REACT-KOMPONENTTI ALKAA TÄSTÄ:
 
 const AdmininElokuvaKortti = ({
-  leffa,
+  leffa: alkuperainenLeffa,
   onDelete, // Receive onDelete as a prop
   onUpdate, // Funktio, jota kutsutaan, kun Tallenna-nappia klikataan
 }) => {
   // Oletusasetus: muokkaustila ei päällä
   const [muokkausPaalla, setMuokkausPaalla] = useState(false);
 
+  // Kun ollaan muokkausnäkymässä:
   // Kopioidaan ja muunnetaan propsina saatu elokuva sopivaan muotoon ja asetetaan se stateen (lomakkeen tila)
-  const [muokattavaLeffa, setMuokattuLeffa] = useState(
-    teeLeffaYhteensopivaksiNakymanKanssa(leffa)
+  const [leffa, setLeffa] = useState(
+    teeLeffaYhteensopivaksiNakymanKanssa(alkuperainenLeffa)
   );
-
-  // Jos propsina olevan leffan arvo päivittyy, asetetaan statessa oleva muokattavaLeffa vastaamaan uutta arvoa.
-  useEffect(() => {
-    setMuokattuLeffa(teeLeffaYhteensopivaksiNakymanKanssa(leffa));
-  }, [leffa]);
 
   // Funktio, joka päivittää statessa olevan leffan tietoja (kutsutaan elokuvan muokkauslomakkeessa)
   const muokkausFunktio = (event) => {
     //Aluksi kopioidaan muokattavan leffan tiedot:
     const paivitettyLeffa = {
-      ...muokattavaLeffa,
+      ...leffa,
     };
 
     // Korvataan muokattu kohda uudella tiedolla:
     paivitettyLeffa[event.target.name] = event.target.value;
-    setMuokattuLeffa(paivitettyLeffa);
+    setLeffa(paivitettyLeffa);
   };
+
+  // Jos adminin elokuvalistan antamasta elokuvasta tulee päivitetty versio, asetetaan uusi elokuvakortin stateen
+  useEffect(() => {
+    setLeffa(teeLeffaYhteensopivaksiNakymanKanssa(alkuperainenLeffa));
+  }, [alkuperainenLeffa]);
 
   // KOKO KORTIN HTML:
   return (
@@ -75,20 +76,23 @@ const AdmininElokuvaKortti = ({
             {muokkausPaalla ? (
               // Jos muokkaus on päällä, näytetään muokkausnäkymä:
               <MuokkausElokuvakortti
-                leffa={muokattavaLeffa}
+                leffa={leffa}
                 muokkausfunktio={muokkausFunktio}
               />
             ) : (
               // Jos muokkaus ei päällä, näytetään normaali näkymä:
-              <ElokuvakortinTiedot leffa={muokattavaLeffa} /> //tähän laitetaan muokattavaLeffa, koska sen sisältämät taulukot on muunnettu merkkijonoiksi
+              <ElokuvakortinTiedot leffa={leffa} />
             )}
 
             {/* MUOKKAUS/PERUUTUSNAPPI */}
             <button
               onClick={() => {
                 setMuokkausPaalla(!muokkausPaalla);
+                // Jos muokkaustilasta peruutetaan ilman muutosten tallentamista (eli kun muokkaustila on päällä), nollataan lähtötilanteeseen (alkuperäiset leffan tiedot)
                 if (muokkausPaalla) {
-                  setMuokattuLeffa(teeLeffaYhteensopivaksiNakymanKanssa(leffa)); // Jos muokkaustilasta peruutetaan, nollataan lähtötilanteeseen (alkuperäiset leffan tiedot)
+                  setLeffa(
+                    teeLeffaYhteensopivaksiNakymanKanssa(alkuperainenLeffa)
+                  );
                 }
               }}
               className="btn btn-outline-success"
@@ -106,8 +110,7 @@ const AdmininElokuvaKortti = ({
             {muokkausPaalla && (
               <button
                 onClick={() => {
-                  // Muokattavaa leffaa on jo muokattu, joten sen tietoja käytetään päivityksessä:
-                  onUpdate(palautaMuokattuLeffaOikeaanMuotoon(muokattavaLeffa));
+                  onUpdate(palautaPaivitettyLeffaOikeaanMuotoon(leffa));
                   setMuokkausPaalla(false);
                 }}
                 className="btn btn-outline-success"
