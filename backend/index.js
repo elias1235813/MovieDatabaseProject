@@ -43,7 +43,8 @@ const dbURI =
   process.env.DB +
   '?retryWrites=true&w=majority&appName=Cluster0';
 console.log(dbURI);
-// jnj
+
+
 mongoose
   .connect(dbURI)
   .then((result) => {
@@ -120,12 +121,14 @@ app.get('/api/movies/:id', cors(), async (req, res) => {
 app.get('/api/movies/genre/:genre', async (req, res) => {
   try {
     const genre = req.params.genre;
-    const movies = await Movie.find({ genre: genre });
+    const movies = await Movie.find({ genre: genre })
     res.json(movies);
   } catch (error) {
     console.log(error);
   }
 });
+
+
 
 // API GET BY TITLE
 

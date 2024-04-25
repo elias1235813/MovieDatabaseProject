@@ -3,6 +3,13 @@ import React, { useState } from 'react';
 const HakuJaSuodatus = ({ onSearch }) => {
   const [genre, setGenre] = useState('');
 
+
+  // Apufunktio, joka muuttaa hakutekstin samaan muotoon kun kannassa
+  const isoEkaKirjain = (string) => {
+    if (string.length === 0) return string;
+    return string[0].toUpperCase() + string.slice(1).toLowerCase();
+  }
+
   const handleSearch = (e) => {
     e.preventDefault();
     onSearch(genre); // Call the onSearch function with the genre as the argument
@@ -18,7 +25,7 @@ const HakuJaSuodatus = ({ onSearch }) => {
           placeholder="Kirjoita kategoria..."
           name="etsi"
           value={genre}
-          onChange={(e) => setGenre(e.target.value)}
+          onChange={(e) => setGenre(isoEkaKirjain(e.target.value))}
         />
         <button type="submit" className="btn btn-primary">
           Etsi
