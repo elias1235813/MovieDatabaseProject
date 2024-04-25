@@ -32,8 +32,7 @@ function AdmininElokuvaLista() {
   }, []); // Empty dependency array means this effect will run only once after the initial render
 
   // LEFFAN TIETOJEN PÄIVITTÄMINEN
-
-  // FUNKTIO, JOKA MUOKKAA LEFFAN TIETOJA
+  // Päivitetyn leffan tiedot viedään bäkkärille:
   const muokkaaLeffanTietoja = async (paivitettyLeffa) => {
     try {
       const response = await fetch(`/api/movies/${paivitettyLeffa._id}`, {
@@ -51,7 +50,7 @@ function AdmininElokuvaLista() {
       } else if (response.status === 400) {
         const responseBody = await response.json();
 
-        // elokuvanDetailitSuomeksi
+        // Virheellisten kenttien tiedot ilmoitetaan suomeksi:
         const virheellisetKentatSuomeksi = responseBody.invalidFields.map(
           (invalidField) => {
             return elokuvanDetailitSuomeksi[invalidField];
@@ -102,7 +101,9 @@ function AdmininElokuvaLista() {
           key={leffa._id}
           leffa={leffa}
           onDelete={() => poistaElokuva(leffa._id)}
-          onUpdate={(paivitettyleffa) => muokkaaLeffanTietoja(paivitettyleffa)}
+          onUpdate={(paivitettavaLeffa) =>
+            muokkaaLeffanTietoja(paivitettavaLeffa)
+          }
         />
       ))}
     </section>

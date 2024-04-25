@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+
+// Liittyy alertiin, joka tulee, jos tiedot yritetään syöttää väärin
 const elokuvanDetailitSuomeksi = {
   title: 'Nimi',
   director: 'Ohjaaja',

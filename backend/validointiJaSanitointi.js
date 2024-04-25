@@ -3,13 +3,12 @@ const { body } = require('express-validator'); // body  on tässä yhteydessä b
 // CUSTOM-funktiot:
 
 // SANITAATTORIT
-
-// STRINGIN ENSIMMÄINEN SANA ALKAMAAN ISOLLA
+// STRINGIN ENSIMMÄINEN SANA ALKAMAAN ISOLLA (käytetään titlessä ja genreissä)
 const capitalizeString = (value) => {
   return value.charAt(0).toUpperCase() + value.slice(1);
 };
 
-// STRINGIN KAIKKI SANAT ALKAMAAN ISOLLA ALKUKIRJAIMELLA
+// STRINGIN KAIKKI SANAT ALKAMAAN ISOLLA ALKUKIRJAIMELLA (käytetään ohjaajan nimessä)
 const capitalizeWordsInArray = (value) => {
   return value.map((item) => {
     // Hajotetaan string sanoiksi välilyönnin perusteella
@@ -25,6 +24,7 @@ const capitalizeWordsInArray = (value) => {
 };
 
 // VALIDAATTORIT
+
 // VUOSILUKU EI TULEVAISUUDESSA (julkaisuvuosi)
 const notInFuture = (value) => {
   return parseInt(value) <= new Date().getFullYear();
@@ -58,9 +58,9 @@ const directorChecker = () => {
 
 // KESTO
 
-// Muotoillaan regexillä formaatti, jossa tunnit ja minuutit halutaan saada:
+// Muotoillaan regexillä formaatti, jossa tunnit ja minuutit halutaan saada
 
-// REGEXin merkinnät (muistin virkistykseksi)
+// REGEXin merkinnät (muistin virkistykseksi):
 // Regex tulee näiden väliin //
 // ^ = merkkijonon pitää alkaa tästä
 // (\d+) = yksi tai useampi numero
@@ -79,7 +79,6 @@ const runtimeChecker = () => {
 };
 
 // TMDB ID
-
 const tmdbIdChecker = () => {
   return body('tmdbMovieId').trim().escape().isInt({ min: 1 });
 };
@@ -104,12 +103,10 @@ const genreChecker = () => {
 
 // KUVA URL
 const imageURLChecker = () => {
-  // escape poistettu
   return body('image').trim().isURL();
 };
 
 // YHDISTETÄÄN VALIDAATTORIT POST JA PATCH -KUTSUJA VARTEN
-
 const postChecker = [
   titlechecker().exists(),
   yearChecker().exists(),

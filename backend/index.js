@@ -44,7 +44,6 @@ const dbURI =
   '?retryWrites=true&w=majority&appName=Cluster0';
 console.log(dbURI);
 
-
 mongoose
   .connect(dbURI)
   .then((result) => {
@@ -121,14 +120,12 @@ app.get('/api/movies/:id', cors(), async (req, res) => {
 app.get('/api/movies/genre/:genre', async (req, res) => {
   try {
     const genre = req.params.genre;
-    const movies = await Movie.find({ genre: genre })
+    const movies = await Movie.find({ genre: genre });
     res.json(movies);
   } catch (error) {
     console.log(error);
   }
 });
-
-
 
 // API GET BY TITLE
 
@@ -179,7 +176,6 @@ app.post('/api/movies', postChecker, async (req, res) => {
 
   if (!result.isEmpty()) {
     // Palautetaan virheestä path, koska siitä nähdään, mikä kenttä on pielessä
-
     // Koska jostain syystä virheissä on joskus sama kenttä tuplana, lisätään virheellinen tieto invalidFields-taulukkoon vain kerran
     const invalidFields = [];
     result.errors.forEach((error) => {
@@ -248,7 +244,6 @@ app.patch('/api/movies/:id', patchChecker, async (req, res) => {
 
   if (!result.isEmpty()) {
     // Palautetaan virheestä path, koska siitä nähdään, mikä kenttä on pielessä
-
     // Koska jostain syystä virheissä on joskus sama kenttä tuplana, lisätään virheellinen tieto invalidFields-taulukkoon vain kerran
     const invalidFields = [];
     result.errors.forEach((error) => {
@@ -264,9 +259,8 @@ app.patch('/api/movies/:id', patchChecker, async (req, res) => {
   }
 
   try {
-    // Päivitettävä elokuva valitaan id:n perusteella
+    // Päivitettävä elokuva valitaan id:n perusteella ja luetaan pyynnöstä elokuvan päivitettävät tiedot update-objektiin
     const filter = { _id: req.params.id };
-    // Luetaan pyynnöstä elokuvan päivitettävät tiedot update-objektiin
     const update = {};
 
     const movieDetails = [
@@ -306,6 +300,7 @@ app.patch('/api/movies/:id', patchChecker, async (req, res) => {
     res.status(200).json(updatedMovie);
   } catch (error) {
     console.log(error);
+    //Status 500, jos jotain menee pieleen
     res.status(500).json({ message: 'Server error' });
   }
 });
