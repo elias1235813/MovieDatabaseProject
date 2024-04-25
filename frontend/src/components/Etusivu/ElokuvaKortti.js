@@ -10,7 +10,7 @@ const ElokuvaKortti = ({ _id, image, title, year, description, genre }) => {
         </div>
         <div className="col-md-8">
           <div className="card-body">
-            <h5 className="card-title">{title}</h5>
+            <h3 className="card-title">{title}</h3>
             <p className="card-text">{year}</p>
             <p className="card-text">{description}</p>
             <p className="card-text">{genre.join(', ')}</p>
