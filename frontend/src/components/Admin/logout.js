@@ -12,17 +12,17 @@ const Logout = ({ onLogout }) => {
       if (response.ok) {
         onLogout();
       } else {
-        console.error('Logout failed');
+        console.error('Uloskirjautuminen epäonnistui');
       }
     } catch (error) {
-      console.error('Error logging out:', error);
+      console.error('Virhe uloskirjautuessa:', error);
     }
   };
 
   return (
     <div className="logout-button-area">
       <button className="btn btn-danger" onClick={handleLogout}>
-        Logout
+        Kirjaudu ulos
       </button>
     </div>
   );

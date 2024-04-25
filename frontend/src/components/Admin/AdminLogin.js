@@ -18,17 +18,17 @@ const AdminLogin = ({ onLogin }) => {
       if (response.ok) {
         onLogin();
       } else {
-        setError('Login failed');
+        setError('Kirjautuminen epäonnistui');
       }
     } catch (error) {
-      setError('Login failed');
-      console.error('Error logging in:', error);
+      setError('Kirjautuminen epäonnistui');
+      console.error('Kirjautuminen epäonnistui:', error);
     }
   };
 
   return (
     <div>
-      <h2>Admin Login</h2>
+      <h2>Ylläpidon sisäänkirjautuminen</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
@@ -56,7 +56,7 @@ const AdminLogin = ({ onLogin }) => {
           />
         </div>
         <button className="btn btn-outline-success" type="submit">
-          Login
+          Kirjaudu sisään
         </button>
       </form>
     </div>
