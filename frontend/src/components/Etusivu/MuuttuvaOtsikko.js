@@ -11,15 +11,16 @@ function Otsikko ({searchQuery = '', onClearSearch}){
         otsikointi = 'Elokuvat';
     }
 
-
-return ( 
-    <section className="muuttuva-otsikko">
-    <h2>{otsikointi}</h2> {searchQuery && (<button type="button" class="btn-close" onClick={onClearSearch} aria-label="Close" ></button>
-    )}
-    </section>
-    
-    
-)
+    return ( 
+        <section className="muuttuva-otsikko" aria-label={otsikointi}>
+            <h2>{otsikointi}</h2>
+            {searchQuery && (
+                <button type="button" className="btn-close" onClick={onClearSearch} aria-label="Tyhjennä haku">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            )}
+        </section>
+    );
 };
 
-export default Otsikko
+export default Otsikko;

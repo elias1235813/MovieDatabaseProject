@@ -29,21 +29,20 @@ function ElokuvaLista({ searchQuery }) {
   };
 
   return (
-    <section className="movie-list">
-      
+    <section className="movie-list" aria-label="Elokuvat">
       {lataa ? (
         <p>Ladataan...</p>
       ) : suodatetutElokuvat.length > 0 ? (
         suodatetutElokuvat.map((leffa) => (
           <ElokuvaKortti
-          key={leffa._id}
-          _id={leffa._id}
-          image={leffa.image}
-          title={leffa.title}
-          year={leffa.year}
-          description={leffa.description}
-          genre={leffa.genre}
-        />
+            key={leffa._id}
+            _id={leffa._id}
+            image={leffa.image}
+            title={leffa.title}
+            year={leffa.year}
+            description={leffa.description}
+            genre={leffa.genre}
+          />
         ))
       ) : (
         <p>Haullasi ei löytynyt tuloksia</p>
