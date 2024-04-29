@@ -5,6 +5,7 @@
     flex-direction: column;
     > section {
         flex: 1;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     }
 }
 
@@ -107,5 +108,13 @@ margin-left: auto;
 }
 
 
+.form-label {
+    font-weight: bold;
+}
+.label-info {
+    font-style: italic;
+    font-weight: normal;
+    padding-top: 0.5em;
+}
 
 

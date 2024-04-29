@@ -3,7 +3,7 @@ import AdminLogin from './AdminLogin';
 import LisaaElokuva from './LisaaElokuva.js';
 import MuokkaaJaPoistaElokuva from './MuokkaaJaPoistaElokuva.js';
 import Logout from './logout.js';
-
+import { Link } from 'react-router-dom';
 const AdminNakyma = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -31,7 +31,16 @@ const AdminNakyma = () => {
     <section>
       {isLoggedIn ? (
         <>
-          <Logout onLogout={handleLogout} className="btn btn-outline-success" />
+          <Link
+            className="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+            to="/"
+            aria-label="Palaa takaisin etusivulle"
+            aria-describedby="elokuvatietokannan etusivu"
+          >
+            Takaisin etusivulle
+          </Link>
+          <Logout onLogout={handleLogout} className="logout-button" />
+
           <h1>Tervetuloa tietokannan ylläpitoon!</h1>
           <p>
             Täällä voit lisätä tietokantaan uusia elokuvia, päivittää elokuvien

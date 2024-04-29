@@ -10,6 +10,8 @@ const elokuvanDetailitSuomeksi = {
   description: 'Kuvaus',
   image: 'Kuvan URL',
 };
+
+// ELOKUVAN LISÄYSKOMPONENTTI
 const LisaaElokuva = () => {
   // State variables to hold form data
   const [tmdbMovieId, settmdbMovieId] = useState('');
@@ -38,11 +40,6 @@ const LisaaElokuva = () => {
   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // TMDB movieID tarkistus
-    // if (!tmdbMovieId || isNaN(tmdbMovieId)) {
-    //   alert('Please input a valid TMDB movie ID. For example, in this link: https://www.themoviedb.org/movie/1202208-muumipeikko-ja-pyrstotahti, the numbers after movie/ are the ID.');
-    //   return;
-    // }
 
     try {
       const response = await fetch('/api/movies', {
@@ -76,7 +73,7 @@ const LisaaElokuva = () => {
       } else if (response.status === 400) {
         const responseBody = await response.json();
 
-        // elokuvanDetailitSuomeksi
+        // Kentät, joissa on virhe, ilmoitetaan suomeksi:
         const virheellisetKentatSuomeksi = responseBody.invalidFields.map(
           (invalidField) => {
             return elokuvanDetailitSuomeksi[invalidField];
@@ -141,7 +138,8 @@ const LisaaElokuva = () => {
         />
 
         <label htmlFor="runtime" className="form-label">
-          Kesto (muodossa 00h 00m)
+          Kesto
+          <p className="label-info"> Kirjoita kesto muodossa: 00h 00m</p>
         </label>
         <input
           type="text"
@@ -154,13 +152,20 @@ const LisaaElokuva = () => {
         />
 
         <label htmlFor="tmdbMovieId" className="form-label">
-          TMDB Elokuva ID <br />
-          <i>
-            ID on numerosarja, joka löytyy TMDB:stä elokuvan sivun
-            verkko-osoitteesta. <br />
-            Esim. osoitteessa: https://www.themoviedb.org/movie/<b>1202208</b>
-            -muumipeikko-ja-pyrstotahti ID on <b>1202208</b>.
-          </i>
+          Elokuvan numerotunnus TMDB elokuvatoetokannassa (TMDB ID)
+          <br />
+          <p className="label-info">
+            Tässä leffatietokannassa käytetään TMDB-elokuvatietokantaa elokuvan
+            käyttäjäarvioden hakemiseen. <br />
+            Tätä varten tarvitaan elokuvan TMDB ID eli numerosarja, joka löytyy
+            TMDB:stä elokuvan sivun verkko-osoitteesta.
+            <p className="label-info">
+              Esim. Muumipeikko ja pyrstötähti elokuva löytyy TMDB -sivustolta
+              osoitteesta: https://www.themoviedb.org/movie/<b>1202208</b>
+              -muumipeikko-ja-pyrstotahti. Osoitteesta nähdään, että elokuvan
+              tunnus eli ID on <b>1202208</b>.
+            </p>
+          </p>
         </label>
         <input
           type="text"
@@ -185,7 +190,8 @@ const LisaaElokuva = () => {
         />
 
         <label htmlFor="genre" className="form-label">
-          Genret (pilkulla erotettuna)
+          Genret
+          <p className="label-info"> Lisää genret pilkulla erotettuna.</p>
         </label>
         <input
           type="text"
@@ -198,7 +204,7 @@ const LisaaElokuva = () => {
         />
 
         <label htmlFor="image" className="form-label">
-          Kuvan URL
+          Kuvan URL (verkko-osoite)
         </label>
         <input
           type="text"
