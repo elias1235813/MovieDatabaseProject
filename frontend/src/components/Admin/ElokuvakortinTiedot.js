@@ -3,7 +3,7 @@ import React from 'react';
 const ElokuvakortinTiedot = ({ leffa }) => {
   return (
     <>
-      <h5 className="card-title"> {leffa.title}</h5>
+      <h3 className="card-title"> {leffa.title}</h3>
       <p className="card-text"> {leffa.director}</p>
       <p className="card-text">{leffa.year}</p>
       <p className="card-text">{leffa.runtime}</p>

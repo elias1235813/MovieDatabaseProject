@@ -96,10 +96,18 @@ const LisaaElokuva = () => {
   };
 
   return (
-    <section className="adminosio" role='region' aria-labelledby="addMovieHeading">
+    <section
+      className="adminosio"
+      role="region"
+      aria-labelledby="addMovieHeading"
+    >
       <h2 id="addMovieHeading">Lisää elokuva</h2>
-      <form onSubmit={handleSubmit} role="form" aria-label="Lisää elokuva -lomake">
-        <label htmlFor="title" className="form-label">
+      <form
+        onSubmit={handleSubmit}
+        role="form"
+        aria-label="Lisää elokuva -lomake"
+      >
+        <label id="leffan-nimi" htmlFor="title" className="form-label">
           Nimi
         </label>
         <input
@@ -139,12 +147,15 @@ const LisaaElokuva = () => {
 
         <label htmlFor="runtime" className="form-label">
           Kesto
-          <p className="label-info"> Kirjoita kesto muodossa: 00h 00m</p>
+          <p className="label-info" id="kesto-ohje">
+            Kirjoita kesto muodossa: 00h 00m
+          </p>
         </label>
         <input
           type="text"
           placeholder="esim. 6h 24m"
           aria-label="Kesto"
+          aria-describedby="kesto-ohje"
           className="form-control"
           id="runtime"
           value={formData.runtime}
@@ -154,23 +165,23 @@ const LisaaElokuva = () => {
         <label htmlFor="tmdbMovieId" className="form-label">
           Elokuvan numerotunnus TMDB elokuvatoetokannassa (TMDB ID)
           <br />
-          <p className="label-info">
+          <p className="label-info" id="tmdb-id-ohje">
             Tässä leffatietokannassa käytetään TMDB-elokuvatietokantaa elokuvan
             käyttäjäarvioden hakemiseen. <br />
             Tätä varten tarvitaan elokuvan TMDB ID eli numerosarja, joka löytyy
-            TMDB:stä elokuvan sivun verkko-osoitteesta.
-            <p className="label-info">
-              Esim. Muumipeikko ja pyrstötähti elokuva löytyy TMDB -sivustolta
-              osoitteesta: https://www.themoviedb.org/movie/<b>1202208</b>
-              -muumipeikko-ja-pyrstotahti. Osoitteesta nähdään, että elokuvan
-              tunnus eli ID on <b>1202208</b>.
-            </p>
+            TMDB:stä elokuvan sivun verkko-osoitteesta. <br />
+            <br />
+            Esim. Muumipeikko ja pyrstötähti elokuva löytyy TMDB -sivustolta
+            osoitteesta: https://www.themoviedb.org/movie/<b>1202208</b>
+            -muumipeikko-ja-pyrstotahti. Osoitteesta nähdään, että elokuvan
+            tunnus eli ID on <b>1202208</b>.
           </p>
         </label>
         <input
           type="text"
           placeholder="esim. 123987"
-          aria-label="TMDB ID"
+          aria-label="Elokuvan tunnus TMDB-tietokannassa"
+          aria-describedby="tmdb-id-ohje"
           className="form-control"
           id="tmdbMovieId"
           value={tmdbMovieId}
@@ -191,13 +202,16 @@ const LisaaElokuva = () => {
 
         <label htmlFor="genre" className="form-label">
           Genret
-          <p className="label-info"> Lisää genret pilkulla erotettuna.</p>
+          <p className="label-info" id="genre-ohje">
+            Lisää genret pilkulla erotettuna.
+          </p>
         </label>
         <input
           type="text"
           className="form-control"
           placeholder="esim. Komedia, Kauhu, Fantasia"
           aria-label="Genret"
+          aria-described-by="genre-ohje"
           id="genre"
           value={formData.genre}
           onChange={handleInputChange}
@@ -210,7 +224,7 @@ const LisaaElokuva = () => {
           type="text"
           className="form-control"
           placeholder="esim. https://kuva.fi/kuva1"
-          aria-label="Kuvan url"
+          aria-label="Kuvan url eli verkko-osoite"
           id="image"
           value={formData.image}
           onChange={handleInputChange}

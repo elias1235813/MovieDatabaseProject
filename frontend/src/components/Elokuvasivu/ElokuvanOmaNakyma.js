@@ -27,7 +27,7 @@ const ElokuvanOmaNakyma = () => {
           className="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
           to="/"
           aria-label="Palaa takaisin etusivulle"
-          aria-describedby="elokuvatietokannan etusivu"
+          aria-role="link"
         >
           Takaisin etusivulle
         </Link>
