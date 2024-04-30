@@ -96,9 +96,9 @@ const LisaaElokuva = () => {
   };
 
   return (
-    <section className="adminosio">
-      <h2>Lisää elokuva</h2>
-      <form onSubmit={handleSubmit}>
+    <section className="adminosio" role='region' aria-labelledby="addMovieHeading">
+      <h2 id="addMovieHeading">Lisää elokuva</h2>
+      <form onSubmit={handleSubmit} role="form" aria-label="Lisää elokuva -lomake">
         <label htmlFor="title" className="form-label">
           Nimi
         </label>

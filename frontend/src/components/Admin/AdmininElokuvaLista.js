@@ -73,25 +73,32 @@ function AdmininElokuvaLista() {
   };
 
   // LEFFAN POISTAMINEN TIETOKANNASTA
-  const poistaElokuva = async (movieId) => {
-    try {
-      const response = await fetch(`/api/movies/${movieId}`, {
-        method: 'DELETE',
-      });
-      if (response.ok) {
-        // Jos poisto onnistuu, poista elokuva listalta
-        setMovies(leffat.filter((movie) => movie._id !== movieId));
-        console.log('Movie deleted successfully');
-        alert('Elokuvan poistaminen onnistui.');
-      } else {
-        console.error('Failed to delete movie');
-        alert('Elokuvan poistaminen epäonnistui.');
-      }
-    } catch (error) {
-      console.error('Error deleting movie:', error);
+const poistaElokuva = async (movieId) => {
+  try {
+    //Varmistus ennen poistoa
+    const confirmDelete = window.confirm('Oletko varma, että haluat poistaa elokuvan?');
+    if (!confirmDelete) {
+      return; // jos käyttäjä peruuttaa älä tee mitään
+    }
+
+    const response = await fetch(`/api/movies/${movieId}`, {
+      method: 'DELETE',
+    });
+    if (response.ok) {
+      // Jos poisto onnistuu, poista elokuva listalta
+      setMovies(leffat.filter((movie) => movie._id !== movieId));
+      console.log('Movie deleted successfully');
+      alert('Elokuvan poistaminen onnistui.');
+    } else {
+      console.error('Failed to delete movie');
       alert('Elokuvan poistaminen epäonnistui.');
     }
-  };
+  } catch (error) {
+    console.error('Error deleting movie:', error);
+    alert('Elokuvan poistaminen epäonnistui.');
+  }
+};
+
 
   // NÄKYMÄN HTML:
   return (
